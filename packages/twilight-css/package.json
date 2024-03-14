@@ -1,5 +1,5 @@
 {
-  "name": "twilight-css",
+  "name": "@blazeshomida/twilight-css",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -12,9 +12,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "peerDependencies": {
+    "tailwindcss": "^3.4.1"
+  },
   "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
     "tsup": "^8.0.2",
-    "typescript": "^5.3.3",
-    "@repo/typescript-config": "workspace:*"
+    "typescript": "^5.3.3"
   }
 }
