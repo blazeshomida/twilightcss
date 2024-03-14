@@ -53,3 +53,39 @@ export function objectToCss(styleObject: StyleObject, indentLevel = 0): string {
   });
   return cssString;
 }
+
+export function parseColorString(cssString: string): [string, string] {
+  const normalizedString = cssString.trim().toLowerCase();
+  if (normalizedString.startsWith("#")) {
+    return ["#", normalizedString];
+  }
+  const match = normalizedString.match(/([a-z]+)\s*\(([^)]+)\)/);
+  if (!match) throw new Error(`Invalid CSS color string: ${cssString}`);
+
+  const [, colorFunction, params] = match;
+  if (!colorFunction || !params)
+    throw new Error(`Invalid CSS color string: ${cssString}`);
+  const normalizedParams = params.includes(",")
+    ? params
+        .split(",")
+        .map((part) => part.trim())
+        .join(" ")
+    : params;
+
+  return [colorFunction, normalizedParams];
+}
+
+export function handleAlphaValue(
+  colorFunction: string,
+  noAlpha: string,
+  withAlpha: string
+) {
+  switch (colorFunction) {
+    case "#":
+    case "rgba":
+    case "hsla":
+      return noAlpha;
+    default:
+      return withAlpha;
+  }
+}
