@@ -1,81 +1,126 @@
-# Turborepo starter
+# TwilightCSS
 
-This is an official starter Turborepo.
+## Introduction
 
-## Using this example
+TwilightCSS brings a simple yet powerful theming solution to TailwindCSS, designed to be approachable for developers at any level of TypeScript proficiency. It guides you through creating dynamic and flexible themes with an easy-to-follow structure.
 
-Run the following command:
+## Usage
 
-```sh
-npx create-turbo@latest
+Embrace TwilightCSS in four easy steps, each augmented with TypeScript insights to enhance your understanding and productivity.
+
+---
+
+### Step 1: Define Config Types
+
+**Defining your config types** is crucial for leveraging TypeScript's capabilities, such as autocompletion and type checking. Here's where you specify the building blocks of your theme.
+
+Imagine `BaseConfig` as the foundation:
+
+```typescript
+type BaseConfig = {
+  color: string;
+  shade: string;
+  variant: string;
+};
 ```
 
-## What's inside?
+Expand `BaseConfig` into `MyConfig` to precisely define your theme's colors, shades, and variants. You can use **Union Types** (`|`), which you can think of like the `or` operator, to specify a set of allowable values:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```typescript
+type MyConfig = {
+  color: "red" | "green" | "blue"; // Visual names like colors or semantic labels such as 'error', 'success', 'brand'
+  shade: "50" | "100" | "800" | "900"; // Numeric for intensity or descriptive like 'lightest', 'darkest', 'light', 'dark'
+  variant: "primary" | "secondary" | "tertiary";
+};
 ```
 
-### Develop
+For **variants**, leverage **template literal types** to combine base variants with states, dynamically creating a rich set of options. TypeScript automatically handles the permutations:
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```typescript
+type MyVariant = "primary" | "secondary";
+type MyState = "hover" | "pressed" | "focused";
+type MyVariantState = MyVariant | `${MyVariant}-${MyState}`;
+// Yields: "primary", "secondary", "primary-hover", "primary-pressed", etc.
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+---
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+### Step 2: Define Primitives
 
+With `MyConfig` established, proceed to **define your color primitives** using `definePrimitives<MyConfig>()`. This setup enriches the function with your specific configuration, ensuring tailored autocompletion and validation.
+
+```typescript
+const primitives = definePrimitives<MyConfig>({
+  brand: {
+    "50": hsl(0, 0, 100), // Lightest brand shade
+    "900": rgb(255, 255, 10), // Darkest brand shade
+  },
+  // Additional colors as needed
+});
 ```
-npx turbo link
+
+---
+
+### Step 3: Define Themes
+
+Creating themes with `defineTheme<MyConfig>()` allows you to define various aesthetic styles with precision. This step benefits from the detailed typing of your config, ensuring your themes align with your initial definitions.
+
+```typescript
+const lightTheme = defineTheme<MyConfig>({
+  selectors: [":root", "[data-theme='light']"],
+  media: ["(prefers-color-scheme: light)", ":root"],
+  tokens: {
+    textColor: {
+      brand: { primary: "brand-500", secondary: "brand-800" },
+      // Further color definitions...
+    },
+    // Define backgroundColor and borderColor similarly
+  },
+});
 ```
 
-## Useful Links
+---
 
-Learn more about the power of Turborepo:
+### Step 4: Integrate with Tailwind Configuration
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Finally, **integrate your themes** into your Tailwind configuration. The `createTwilight` function compiles your primitives and themes into a coherent setup for TailwindCSS, bringing your custom themes to life.
+
+```typescript
+import { createTwilight } from "@blazeshomida/twilightcss";
+import { primitives, lightTheme } from "./your-theme-definitions";
+
+const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(
+  primitives,
+  [lightTheme, darkTheme] // An array of themes you want to generate
+);
+
+export default {
+  content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
+  theme: {
+    colors: { ...twilightColors },
+    extend: { ...twilightExtends },
+  },
+  plugins: [twilightPlugin],
+};
+```
+
+---
+
+## Additional Resources
+
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- [TailwindCSS Documentation](https://tailwindcss.com/docs)
+- [GitHub Repository](https://github.com/blazeshomida/twilightcss) - For contributions, issues, and feature requests
+
+## Conclusion
+
+TwilightCSS simplifies theming in TailwindCSS with an intuitive setup that encourages learning TypeScript along the way. By defining your themes through TypeScript, you gain autocompletion, type safety, and a structured approach to theming that can evolve with your project.
+
+## Known Issues and Limitations
+
+- TwilightCSS currently supports a predefined set of color functions. We are working to expand this to include more customizability in future releases.
+- For best results, ensure consistent color function usage across your themes to avoid discrepancies in generated tokens.
+
+## Contributing
+
+We welcome contributions to TwilightCSS! Whether it's reporting a bug, suggesting a feature, or submitting a pull request, every contribution is valuable to us.

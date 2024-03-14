@@ -3,5 +3,47 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "files.exclude": {
+    "**/.git": false,
+    "**/.svn": false,
+    "**/.hg": false,
+    "**/CVS": false,
+    "**/.DS_Store": false,
+    "**/Thumbs.db": false,
+    "**/*.config.js": false,
+    "**/*.config.ts": false,
+    "**/.eslintrc.json": false,
+    "**/.gitignore": false,
+    "**/.next": false,
+    "**/.vscode": false,
+    "**/README.md": false,
+    "**/env.d.ts": false,
+    "**/next-env.d.ts": false,
+    "**/next.config.mjs": false,
+    "**/node_modules": false,
+    "**/package.json": false,
+    "**/tsconfig.json": false
+  },
+  "explorerExclude.backup": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/*.config.js": true,
+    "**/*.config.ts": true,
+    "**/.eslintrc.json": true,
+    "**/.gitignore": true,
+    "**/.next": true,
+    "**/.vscode": true,
+    "**/README.md": true,
+    "**/env.d.ts": true,
+    "**/next-env.d.ts": true,
+    "**/next.config.mjs": true,
+    "**/node_modules": true,
+    "**/package.json": true,
+    "**/tsconfig.json": true
+  }
 }
