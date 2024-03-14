@@ -71,17 +71,6 @@ const validPercent = (num: number): boolean =>
   validRange(getPercent(num), 0, 100);
 
 /**
- * Validates the alpha component, ensuring it is within the valid percentage range (0-100%)
- * after being normalized. This function assumes the alpha value is not optional and must
- * be provided for validation.
- *
- * @param a - The alpha component to validate.
- * @returns True if the alpha value is within the 0 to 100 range after normalization, otherwise false.
- */
-const validAlpha = (a: number | undefined): boolean =>
-  a !== undefined && validPercent(a);
-
-/**
  * Validates HSL component values, ensuring the hue is within 0-360,
  * and saturation/lightness are within 0-100% after conversion.
  *
@@ -105,7 +94,7 @@ const validHsl = (h: number, s: number, l: number): boolean =>
  * @returns The RGB(A) color string.
  */
 export const rgb = (r: number, g: number, b: number, a?: number): string => {
-  if (!validRgb(r, g, b) || !validAlpha(a))
+  if (!validRgb(r, g, b) || (a !== undefined && !validPercent(a)))
     throw new Error(`Invalid rgb(a) value passed`);
   return `rgb${getColorType(a)}(${r}, ${g}, ${b}${getAlphaComp(a)})` as const;
 };
@@ -122,7 +111,7 @@ export const rgb = (r: number, g: number, b: number, a?: number): string => {
  * @returns The HSL(A) color string.
  */
 export const hsl = (h: number, s: number, l: number, a?: number): string => {
-  if (!validHsl(h, s, l) || !validAlpha(a)) {
+  if (!validHsl(h, s, l) || (a !== undefined && !validPercent(a))) {
     throw new Error(`Invalid hsl(a) value passed`);
   }
   return `hsl${getColorType(a)}(${h}, ${getPercent(s)}%, ${getPercent(
