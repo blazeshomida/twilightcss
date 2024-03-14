@@ -1,8 +1,37 @@
-export type StyleObject = {
-  [key: string]: string | number | StyleObject;
+export type BaseConfig = {
+  color: string;
+  shade: string;
+  variant: string;
+};
+export type Token<TConfig extends BaseConfig> = {
+  [Color in TConfig["color"]]?: {
+    [Variant in TConfig["variant"] | "DEFAULT"]?:
+      | `${Color}-${TConfig["shade"]}`
+      | Color;
+  };
 };
 
 export type MediaProp = [MEDIA_QUERIES, string];
+
+export type PrimitiveConfig<TConfig extends BaseConfig> = {
+  [Color in TConfig["color"]]?: {
+    [Shade in TConfig["shade"] | "DEFAULT"]?: string;
+  };
+};
+
+export type Theme<TConfig extends BaseConfig> = {
+  selectors: string | string[];
+  media?: MediaProp | MediaProp[];
+  tokens: {
+    textColor?: Token<TConfig>;
+    backgroundColor?: Token<TConfig>;
+    borderColor?: Token<TConfig>;
+  };
+};
+
+export type StyleObject = {
+  [key: string]: string | number | StyleObject;
+};
 
 // Type Constants
 type MEDIA_QUERIES =
