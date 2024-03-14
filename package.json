@@ -1,5 +1,5 @@
 {
-  "name": "twilight-css",
+  "name": "@repo/twilightcss",
   "private": true,
   "scripts": {
     "build": "turbo build",
