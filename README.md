@@ -4,6 +4,8 @@
 
 TwilightCSS brings a simple yet powerful theming solution to TailwindCSS, designed to be approachable for developers at any level of TypeScript proficiency. It guides you through creating dynamic and flexible themes with an easy-to-follow structure.
 
+> Docs currently in progress. Feel free to check out the repos [docs](https://github.com/blazeshomida/twilightcss/tree/main/apps/docs/src/content/docs) package to view more details.
+
 ## Usage
 
 Embrace TwilightCSS in four easy steps, each augmented with TypeScript insights to enhance your understanding and productivity.
