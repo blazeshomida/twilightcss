@@ -44,17 +44,16 @@ type MyVariantState = MyVariant | `${MyVariant}-${MyState}`;
 
 ### 2. Define Primitives
 
-Next, define your color primitives using TwilightCSS's `definePrimitives`. This function enables you to specify the base colors for your theme with ease. TwilightCSS comes with built-in color utility functions that mimic CSS color functions, such as `hsl()`, `rgb()`, and others, allowing you to define colors in a familiar syntax directly within your TypeScript files.
+Next, define your color primitives using TwilightCSS's `definePrimitives`. This function enables you to specify the base colors for your theme with ease. You can utilize any css color string such as hsl, rgb, hex, etc, allowing you to define colors in a familiar syntax directly within your TypeScript files.
 
 ```typescript
 // src/themes/primitives.ts
-import { definePrimitives, hsl, rgb } from "@blazeshomida/twilightcss";
+import { definePrimitives } from "@blazeshomida/twilightcss";
 
 const primitives = definePrimitives<MyConfig>({
-  // Use the hsl() and rgb() utility functions to define color shades easily
   brand: {
-    "50": hsl(0, 0, 100), // Lightest brand shade defined using HSL
-    "900": rgb(255, 255, 10), // Darkest brand shade defined using RGB
+    "50": "hsl(0, 0%, 100%)", // Lightest brand shade defined using HSL
+    "900": "rgb(255, 255, 10)", // Darkest brand shade defined using RGB
   },
   // Additional color categories can be defined in the same manner
 });
