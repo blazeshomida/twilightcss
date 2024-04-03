@@ -7,10 +7,13 @@ export function createTwilight<TConfig extends BaseConfig>(
   primitives: PrimitiveConfig<TConfig>,
   themes: Theme<TConfig>[]
 ) {
-  const { twPluginPrimitives, twPresetPrimitives } =
+  const { twPluginPrimitives, twPresetPrimitives, colorShadeToFn } =
     handlePrimitives(primitives);
 
-  const { twPresetTokens, twPluginThemes } = handleThemes(themes);
+  const { twPresetTokens, twPluginThemes } = handleThemes(
+    themes,
+    colorShadeToFn
+  );
 
   const twilightPlugin = plugin(({ addBase }) => {
     addBase({ ...twPluginPrimitives, ...twPluginThemes });

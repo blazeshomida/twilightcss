@@ -8,13 +8,13 @@ Begin by installing TwilightCSS using your preferred package manager:
 
 ```sh
 # Using pnpm
-pnpm install -D @twilightcss/twilightcss
+pnpm install -D @blazeshomida/twilightcss
 
 # Using npm
-npm install --save-dev @twilightcss/twilightcss
+npm install --save-dev @blazeshomida/twilightcss
 
 # Using yarn
-yarn add -D @twilightcss/twilightcss
+yarn add -D @blazeshomida/twilightcss
 ```
 
 ## Quick Start
@@ -44,16 +44,17 @@ type MyVariantState = MyVariant | `${MyVariant}-${MyState}`;
 
 ### 2. Define Primitives
 
-Next, define your color primitives using TwilightCSS's `definePrimitives`. This function enables you to specify the base colors for your theme with ease. You can utilize any css color string such as hsl, rgb, hex, etc, allowing you to define colors in a familiar syntax directly within your TypeScript files.
+Next, define your color primitives using TwilightCSS's `definePrimitives`. This function enables you to specify the base colors for your theme with ease. TwilightCSS comes with built-in color utility functions that mimic CSS color functions, such as `hsl()`, `rgb()`, and others, allowing you to define colors in a familiar syntax directly within your TypeScript files.
 
 ```typescript
 // src/themes/primitives.ts
-import { definePrimitives } from "@twilightcss/twilightcss";
+import { definePrimitives, hsl, rgb } from "@blazeshomida/twilightcss";
 
 const primitives = definePrimitives<MyConfig>({
+  // Use the hsl() and rgb() utility functions to define color shades easily
   brand: {
-    "50": "hsl(0, 0%, 100%)", // Lightest brand shade defined using HSL
-    "900": "rgb(255, 255, 10)", // Darkest brand shade defined using RGB
+    "50": hsl(0, 0, 100), // Lightest brand shade defined using HSL
+    "900": rgb(255, 255, 10), // Darkest brand shade defined using RGB
   },
   // Additional color categories can be defined in the same manner
 });
@@ -65,7 +66,7 @@ Create your themes by defining how colors should be applied across different par
 
 ```typescript
 // Example for a light theme: src/themes/lightTheme.ts
-import { defineTheme } from "@twilightcss/twilightcss";
+import { defineTheme } from "@blazeshomida/twilightcss";
 
 const lightTheme = defineTheme<MyConfig>({
   selectors: [":root", "[data-theme='light']"],
@@ -86,7 +87,7 @@ Finally, integrate TwilightCSS with your Tailwind configuration to activate your
 
 ```typescript
 // Tailwind configuration file: tailwind.config.js or tailwind.config.ts
-import { createTwilight } from "@twilightcss/twilightcss";
+import { createTwilight } from "@blazeshomida/twilightcss";
 import { primitives, lightTheme, darkTheme } from "./your-theme-definitions";
 
 const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(

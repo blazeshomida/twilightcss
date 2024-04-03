@@ -10,8 +10,6 @@ TwilightCSS brings a simple yet powerful theming solution to TailwindCSS, design
 
 Embrace TwilightCSS in four easy steps, each augmented with TypeScript insights to enhance your understanding and productivity.
 
-> Things may change frequently as I solidify my idea. I will try to document all changes as I proceed.
-
 ---
 
 ### Step 1: Define Config Types
@@ -56,8 +54,8 @@ With `MyConfig` established, proceed to **define your color primitives** using `
 ```typescript
 const primitives = definePrimitives<MyConfig>({
   brand: {
-    "50": "hsl(0, 0%, 100%)", // Lightest brand shade
-    "900": "rgb(255, 255, 10)", // Darkest brand shade
+    "50": hsl(0, 0, 100), // Lightest brand shade
+    "900": rgb(255, 255, 10), // Darkest brand shade
   },
   // Additional colors as needed
 });
@@ -90,7 +88,7 @@ const lightTheme = defineTheme<MyConfig>({
 Finally, **integrate your themes** into your Tailwind configuration. The `createTwilight` function compiles your primitives and themes into a coherent setup for TailwindCSS, bringing your custom themes to life.
 
 ```typescript
-import { createTwilight } from "@twilight/twilightcss";
+import { createTwilight } from "@blazeshomida/twilightcss";
 import { primitives, lightTheme } from "./your-theme-definitions";
 
 const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(
@@ -119,6 +117,11 @@ export default {
 ## Conclusion
 
 TwilightCSS simplifies theming in TailwindCSS with an intuitive setup that encourages learning TypeScript along the way. By defining your themes through TypeScript, you gain autocompletion, type safety, and a structured approach to theming that can evolve with your project.
+
+## Known Issues and Limitations
+
+- TwilightCSS currently supports a predefined set of color functions. We are working to expand this to include more customizability in future releases.
+- For best results, ensure consistent color function usage across your themes to avoid discrepancies in generated tokens.
 
 ## Contributing
 

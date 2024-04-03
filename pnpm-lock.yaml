@@ -66,12 +66,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@types/culori':
-        specifier: ^2.1.0
-        version: 2.1.0
-      culori:
-        specifier: ^4.0.1
-        version: 4.0.1
       tsup:
         specifier: ^8.0.2
         version: 8.0.2(postcss@8.4.35)(typescript@5.3.3)
@@ -920,10 +914,6 @@ packages:
     dependencies:
       '@babel/types': 7.24.0
     dev: false
-
-  /@types/culori@2.1.0:
-    resolution: {integrity: sha512-4uJT5CcC9Mi8mACkWShsPHqILMWL0OqoTsfoLJUGzN1mcipcepmmEdzU8b9L1KwyRNN3rnQO39ylI/2VR850zw==}
-    dev: true
 
   /@types/debug@4.1.12:
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -2086,11 +2076,6 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
     dev: false
-
-  /culori@4.0.1:
-    resolution: {integrity: sha512-LSnjA6HuIUOlkfKVbzi2OlToZE8OjFi667JWN9qNymXVXzGDmvuP60SSgC+e92sd7B7158f7Fy3Mb6rXS5EDPw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: true
 
   /damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}

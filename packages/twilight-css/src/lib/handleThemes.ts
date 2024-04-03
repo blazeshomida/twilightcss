@@ -40,7 +40,8 @@ type TwTokenTypes = keyof typeof tokenTypeMap;
 type TwTokens = Record<string, Record<string, string>>;
 
 function handleTokens<TConfig extends BaseConfig>(
-  tokens: Theme<TConfig>["tokens"]
+  tokens: Theme<TConfig>["tokens"],
+  colorShadeToFn: Map<string, string>
 ) {
   const currentTheme: Record<string, string> = {};
   const currentTokens: Record<TwTokenTypes, TwTokens> = {
@@ -59,8 +60,16 @@ function handleTokens<TConfig extends BaseConfig>(
         const variant = String(variantKey);
         const cssVarName = `--${tokenShort}-${color}-${variant}`;
         currentTheme[cssVarName] = `var(--clr-${colorShade})`;
-        currentTokenColor[variant] =
-          `oklch(var(${cssVarName}) / <alpha-value>)`;
+        const colorFn = colorShadeToFn.get(colorShade);
+        if (!colorFn) {
+          console.error(`Unable to find color function for ${colorShade}`);
+          return;
+        }
+        currentTokenColor[variant] = handleAlphaValue(
+          colorFn,
+          `var(${cssVarName})`,
+          `${colorFn}(var(${cssVarName}) / <alpha-value>)`
+        );
       });
       currentTokens[tokenType][color] = currentTokenColor;
     });
@@ -69,7 +78,8 @@ function handleTokens<TConfig extends BaseConfig>(
 }
 
 export function handleThemes<TConfig extends BaseConfig>(
-  themes: Theme<TConfig>[]
+  themes: Theme<TConfig>[],
+  colorShadeToFn: Map<string, string>
 ) {
   const twPluginThemes = {};
   const twPresetTokens: Record<TwTokenTypes, TwTokens> = {
@@ -80,7 +90,10 @@ export function handleThemes<TConfig extends BaseConfig>(
 
   themes.forEach((theme) => {
     const { tokens, media, selectors } = theme;
-    const { currentTheme, currentTokens } = handleTokens(tokens);
+    const { currentTheme, currentTokens } = handleTokens(
+      tokens,
+      colorShadeToFn
+    );
     Object.assign(twPresetTokens, currentTokens);
     Object.assign(twPluginThemes, handleSelectors(selectors, currentTheme));
     if (media) {
