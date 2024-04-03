@@ -90,7 +90,7 @@ const lightTheme = defineTheme<MyConfig>({
 Finally, **integrate your themes** into your Tailwind configuration. The `createTwilight` function compiles your primitives and themes into a coherent setup for TailwindCSS, bringing your custom themes to life.
 
 ```typescript
-import { createTwilight } from "@blazeshomida/twilightcss";
+import { createTwilight } from "@twilight/twilightcss";
 import { primitives, lightTheme } from "./your-theme-definitions";
 
 const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(

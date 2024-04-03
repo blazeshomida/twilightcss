@@ -39,7 +39,7 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2
     devDependencies:
-      '@blazeshomida/twilightcss':
+      '@twilight/twilightcss':
         specifier: workspace:*
         version: link:../../packages/twilight-css
 
