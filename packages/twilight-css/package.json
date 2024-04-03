@@ -1,6 +1,6 @@
 {
   "name": "@twilightcss/twilightcss",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "TwilightCSS brings a simple yet powerful theming solution to TailwindCSS, designed to be approachable for developers at any level of TypeScript proficiency. It guides you through creating dynamic and flexible themes with an easy-to-follow structure.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
