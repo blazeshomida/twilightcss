@@ -1,6 +1,6 @@
 {
-  "name": "@blazeshomida/twilightcss",
-  "version": "0.0.1",
+  "name": "@twilightcss/twilightcss",
+  "version": "0.0.2",
   "description": "TwilightCSS brings a simple yet powerful theming solution to TailwindCSS, designed to be approachable for developers at any level of TypeScript proficiency. It guides you through creating dynamic and flexible themes with an easy-to-follow structure.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,15 +22,14 @@
   "peerDependencies": {
     "tailwindcss": "^3.4.1"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/blazeshomida/twilightcss"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
+    "@types/culori": "^2.1.0",
+    "culori": "^4.0.1",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   }
