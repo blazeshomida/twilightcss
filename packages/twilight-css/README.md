@@ -6,6 +6,21 @@ TwilightCSS brings a simple yet powerful theming solution to TailwindCSS, design
 
 > Docs currently in progress. Feel free to check out the repos [docs](https://github.com/blazeshomida/twilightcss/tree/main/apps/docs/src/content/docs) package to view more details.
 
+## Installation
+
+Begin by installing TwilightCSS using your preferred package manager:
+
+```sh
+# Using pnpm
+pnpm install -D @twilightcss/twilightcss
+
+# Using npm
+npm install --save-dev @twilightcss/twilightcss
+
+# Using yarn
+yarn add -D @twilightcss/twilightcss
+```
+
 ## Usage
 
 Embrace TwilightCSS in four easy steps, each augmented with TypeScript insights to enhance your understanding and productivity.
@@ -54,6 +69,7 @@ type MyVariantState = MyVariant | `${MyVariant}-${MyState}`;
 With `MyConfig` established, proceed to **define your color primitives** using `definePrimitives<MyConfig>()`. This setup enriches the function with your specific configuration, ensuring tailored autocompletion and validation.
 
 ```typescript
+import { definePrimitives } from "@twilightcss/twilightcss";
 const primitives = definePrimitives<MyConfig>({
   brand: {
     "50": "hsl(0, 0%, 100%)", // Lightest brand shade
@@ -70,6 +86,7 @@ const primitives = definePrimitives<MyConfig>({
 Creating themes with `defineTheme<MyConfig>()` allows you to define various aesthetic styles with precision. This step benefits from the detailed typing of your config, ensuring your themes align with your initial definitions.
 
 ```typescript
+import { defineTheme } from "@twilightcss/twilightcss";
 const lightTheme = defineTheme<MyConfig>({
   selectors: [":root", "[data-theme='light']"],
   media: ["(prefers-color-scheme: light)", ":root"],
@@ -90,7 +107,7 @@ const lightTheme = defineTheme<MyConfig>({
 Finally, **integrate your themes** into your Tailwind configuration. The `createTwilight` function compiles your primitives and themes into a coherent setup for TailwindCSS, bringing your custom themes to life.
 
 ```typescript
-import { createTwilight } from "@twilight/twilightcss";
+import { createTwilight } from "@twilightcss/twilightcss";
 import { primitives, lightTheme } from "./your-theme-definitions";
 
 const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(
