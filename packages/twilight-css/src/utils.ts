@@ -4,6 +4,31 @@ export function objectEntries<TObj extends object>(obj: TObj) {
   return Object.entries(obj) as [keyof TObj, TObj[keyof TObj]][];
 }
 
+type AnyObject = Record<PropertyKey, any>;
+
+function objectKeys<T extends AnyObject>(object: T) {
+  return Object.keys(object) as (keyof T)[];
+}
+
+function isObject(item: any): item is AnyObject {
+  return item && typeof item === "object" && !Array.isArray(item);
+}
+
+export function deepMerge<Target extends AnyObject, Source extends AnyObject>(
+  target: Target,
+  source: Source
+): Target & Source {
+  let output: Target & Source = Object.assign({}, target);
+  objectKeys(source).forEach((key) => {
+    if (!isObject(source[key]) || !(key in target)) {
+      output[key] = source[key];
+    } else {
+      output[key] = deepMerge(target[key], source[key]);
+    }
+  });
+  return output;
+}
+
 /**
  * Converts a JavaScript object representing CSS styles into a CSS string.
  * This function supports nested objects for representing styles for nested selectors.
@@ -52,40 +77,4 @@ export function objectToCss(styleObject: StyleObject, indentLevel = 0): string {
     }
   });
   return cssString;
-}
-
-export function parseColorString(cssString: string): [string, string] {
-  const normalizedString = cssString.trim().toLowerCase();
-  if (normalizedString.startsWith("#")) {
-    return ["#", normalizedString];
-  }
-  const match = normalizedString.match(/([a-z]+)\s*\(([^)]+)\)/);
-  if (!match) throw new Error(`Invalid CSS color string: ${cssString}`);
-
-  const [, colorFunction, params] = match;
-  if (!colorFunction || !params)
-    throw new Error(`Invalid CSS color string: ${cssString}`);
-  const normalizedParams = params.includes(",")
-    ? params
-        .split(",")
-        .map((part) => part.trim())
-        .join(" ")
-    : params;
-
-  return [colorFunction, normalizedParams];
-}
-
-export function handleAlphaValue(
-  colorFunction: string,
-  noAlpha: string,
-  withAlpha: string
-) {
-  switch (colorFunction) {
-    case "#":
-    case "rgba":
-    case "hsla":
-      return noAlpha;
-    default:
-      return withAlpha;
-  }
 }
