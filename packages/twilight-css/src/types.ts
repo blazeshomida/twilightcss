@@ -19,15 +19,25 @@ export type PrimitiveConfig<TConfig extends BaseConfig> = {
   };
 };
 
-export type Theme<TConfig extends BaseConfig> = {
-  selectors: string | string[];
-  media?: MediaProp | MediaProp[];
-  tokens: {
-    textColor?: Token<TConfig>;
-    backgroundColor?: Token<TConfig>;
-    borderColor?: Token<TConfig>;
-  };
+type Tokens<TConfig extends BaseConfig> = {
+  textColor?: Token<TConfig>;
+  backgroundColor?: Token<TConfig>;
+  borderColor?: Token<TConfig>;
 };
+
+type SelectorTokens<TConfig extends BaseConfig> = {
+  selectors: string | string[];
+  tokens: Tokens<TConfig>;
+};
+type MediaTokens<TConfig extends BaseConfig> = {
+  media: MediaProp | MediaProp[];
+  tokens: Tokens<TConfig>;
+};
+
+export type Theme<TConfig extends BaseConfig> =
+  | SelectorTokens<TConfig>
+  | MediaTokens<TConfig>
+  | (SelectorTokens<TConfig> & MediaTokens<TConfig>);
 
 export type StyleObject = {
   [key: string]: string | number | StyleObject;
