@@ -3,8 +3,8 @@ import {
   definePrimitives,
   defineShadcnTheme,
   defineTheme,
-} from "../lib/config-definers";
-import { createTwilight } from "../lib/createTwilight";
+  createTwilight,
+} from "@/index";
 type Config = {
   variant: "primary" | "secondary";
   color:
