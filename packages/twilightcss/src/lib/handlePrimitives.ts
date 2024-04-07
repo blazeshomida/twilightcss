@@ -11,8 +11,30 @@ function cleanParam(value: number, precision = 2): number {
 export function handlePrimitives<TConfig extends BaseConfig>(
   primitives: PrimitiveConfig<TConfig>
 ) {
-  const cssProperties: Record<string, string> = {};
-  const twPresetPrimitives: Record<string, Record<string, string>> = {};
+  const cssProperties: Record<string, string> = {
+    "--clr-inherit": "inherit",
+    "--clr-current": "currentColor",
+    "--clr-transparent": "transparent",
+    "--clr-black": "0% 0 0",
+    "--clr-white": "100% 0 0",
+  };
+  const twPresetPrimitives: Record<string, Record<string, string>> = {
+    inherit: {
+      DEFAULT: "var(--clr-inherit) ",
+    },
+    current: {
+      DEFAULT: "var(--clr-current) ",
+    },
+    transparent: {
+      DEFAULT: "var(--clr-transparent)",
+    },
+    black: {
+      DEFAULT: "oklch(var(--clr-black) / <alpha-value>)",
+    },
+    white: {
+      DEFAULT: "oklch(var(--clr-white) / <alpha-value>)",
+    },
+  };
   objectEntries(primitives).forEach(([color, shades]) => {
     if (!shades) return;
     const currentColor: Record<string, string> = {};
