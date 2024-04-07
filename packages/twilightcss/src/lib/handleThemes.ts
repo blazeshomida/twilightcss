@@ -1,4 +1,10 @@
-import { BaseConfig, MediaProp, Theme, Token } from "../types";
+import {
+  BaseConfig,
+  MediaProp,
+  ShadcnTheme,
+  ThemeOptions,
+  TwTheme,
+} from "../types";
 import { objectEntries, objectToCss } from "../utils";
 
 const validMediaArray = (
@@ -31,16 +37,16 @@ function handleSelectors(
   };
 }
 
-const tokenTypeMap = {
+const twTokenTypeMap = {
   textColor: "text",
   backgroundColor: "bg",
   borderColor: "border",
 } as const;
-type TwTokenTypes = keyof typeof tokenTypeMap;
+type TwTokenTypes = keyof typeof twTokenTypeMap;
 type TwTokens = Record<string, Record<string, string>>;
 
-function handleTokens<TConfig extends BaseConfig>(
-  tokens: Theme<TConfig>["tokens"]
+function handleTwTokens<TConfig extends BaseConfig>(
+  tokens: TwTheme<TConfig>["tokens"]
 ) {
   const currentTheme: Record<string, string> = {};
   const currentTokens: Record<TwTokenTypes, TwTokens> = {
@@ -50,7 +56,7 @@ function handleTokens<TConfig extends BaseConfig>(
   };
   objectEntries(tokens).forEach(([tokenType, colors]) => {
     if (!colors) return;
-    const tokenShort = tokenTypeMap[tokenType];
+    const tokenShort = twTokenTypeMap[tokenType];
     objectEntries(colors).forEach(([color, variants]) => {
       if (!variants) return;
       const currentTokenColor: Record<string, string> = {};
@@ -65,22 +71,53 @@ function handleTokens<TConfig extends BaseConfig>(
       currentTokens[tokenType][color] = currentTokenColor;
     });
   });
-  return { currentTheme, currentTokens };
+  return { currentTokens, currentTheme };
+}
+function handleShadcnTokens<TConfig extends BaseConfig>(
+  tokens: ShadcnTheme<TConfig>["tokens"]
+) {
+  const currentTokens: Record<string, Record<string, string>> = {};
+  const currentTheme: Record<string, string> = {};
+  objectEntries(tokens).forEach(([token, value]) => {
+    if (!value) return;
+    const cssVarName = `--${token}`;
+    const twExtendsString = `oklch(var(${cssVarName}) / <alpha-value>)`;
+    currentTheme[cssVarName] = `var(--clr-${value})`;
+    if (token.includes("-")) {
+      const [background] = token.split("-");
+      if (!background) return;
+      currentTokens[background] = {
+        ...currentTokens[background],
+        foreground: twExtendsString,
+      };
+    } else {
+      currentTokens[token] = {
+        ...currentTokens[token],
+        DEFAULT: twExtendsString,
+      };
+    }
+  });
+  return { currentTokens: { colors: currentTokens }, currentTheme };
+}
+function isTwTheme<TConfig extends BaseConfig>(
+  theme: TwTheme<TConfig> | ShadcnTheme<TConfig>,
+  type: "tailwindcss" | "shadcn"
+): theme is TwTheme<TConfig> {
+  return type === "tailwindcss";
 }
 
-export function handleThemes<TConfig extends BaseConfig>(
-  themes: Theme<TConfig>[]
-) {
+export function handleThemes<TConfig extends BaseConfig>({
+  themes,
+  type = "tailwindcss",
+}: ThemeOptions<TConfig>) {
   const twPluginThemes = {};
-  const twPresetTokens: Record<TwTokenTypes, TwTokens> = {
-    textColor: {},
-    backgroundColor: {},
-    borderColor: {},
-  };
-
+  const twPresetTokens = {};
   themes.forEach((theme) => {
-    const { currentTheme, currentTokens } = handleTokens(theme.tokens);
+    const { currentTheme, currentTokens } = isTwTheme(theme, type)
+      ? handleTwTokens(theme.tokens)
+      : handleShadcnTokens(theme.tokens);
     Object.assign(twPresetTokens, currentTokens);
+
     if ("selectors" in theme) {
       Object.assign(
         twPluginThemes,
