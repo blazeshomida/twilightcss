@@ -25,7 +25,7 @@ export function handlePrimitives<TConfig extends BaseConfig>(
       const colorShade = shade === "DEFAULT" ? color : `${color}-${shade}`;
       const property = `--clr-${colorShade}`;
       cssProperties[property] =
-        `${cleanParam(l) * 100}% ${cleanParam(c)} ${cleanParam(h)}`;
+        `${Math.round(cleanParam(l) * 100)}% ${cleanParam(c)} ${cleanParam(h)}`;
       currentColor[shade] = `oklch(var(${property}) / <alpha-value>)`;
     });
     twPresetPrimitives[color] = currentColor;
