@@ -100,6 +100,26 @@ const lightTheme = defineTheme<MyConfig>({
 });
 ```
 
+> Currently working on adding shadcn theming abilities
+
+```typescript
+import { defineShadcnTheme } from "@twilightcss/twilightcss";
+const lightTheme = defineShadcnTheme<MyConfig>({
+  selectors: [":root", ".light"],
+  media: ["(prefers-color-scheme: light)", ":root"],
+  tokens: {
+    background: "neutral-50",
+    foreground: "neutral-950",
+    primary: "red-600",
+    "primary-foreground": "red-50",
+    secondary: "blue-600",
+    "secondary-foreground": "blue-50",
+    accent: "green-600",
+    "accent-foreground": "green-50",
+  },
+});
+```
+
 ---
 
 ### Step 4: Integrate with Tailwind Configuration
@@ -112,7 +132,10 @@ import { primitives, lightTheme } from "./your-theme-definitions";
 
 const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(
   primitives,
-  [lightTheme, darkTheme] // An array of themes you want to generate
+  {
+    type: "tailwindcss", // Can be either 'tailwindcss' | 'shadcn'; default: 'tailwindcss'
+    themes: [lightTheme, darkTheme], // An array of themes you want to generate
+  }
 );
 
 export default {
