@@ -1,5 +1,5 @@
 import { BaseConfig, MediaProp, Theme, Token } from "../types";
-import { handleAlphaValue, objectEntries, objectToCss } from "../utils";
+import { objectEntries, objectToCss } from "../utils";
 
 const validMediaArray = (
   media: MediaProp | MediaProp[]
@@ -79,12 +79,16 @@ export function handleThemes<TConfig extends BaseConfig>(
   };
 
   themes.forEach((theme) => {
-    const { tokens, media, selectors } = theme;
-    const { currentTheme, currentTokens } = handleTokens(tokens);
+    const { currentTheme, currentTokens } = handleTokens(theme.tokens);
     Object.assign(twPresetTokens, currentTokens);
-    Object.assign(twPluginThemes, handleSelectors(selectors, currentTheme));
-    if (media) {
-      Object.assign(twPluginThemes, handleMedia(media, currentTheme));
+    if ("selectors" in theme) {
+      Object.assign(
+        twPluginThemes,
+        handleSelectors(theme.selectors, currentTheme)
+      );
+    }
+    if ("media" in theme) {
+      Object.assign(twPluginThemes, handleMedia(theme.media, currentTheme));
     }
   });
 
