@@ -1,8 +1,8 @@
 import plugin from "tailwindcss/plugin";
-import { BaseConfig, PrimitiveConfig, ThemeOptions } from "../types";
+import { BaseConfig, PrimitiveConfig, ThemeOptions } from "@/types";
+import { deepMerge } from "@/utils";
 import { handlePrimitives } from "./handlePrimitives";
 import { handleThemes } from "./handleThemes";
-import { deepMerge } from "../utils";
 
 export function createTwilight<TConfig extends BaseConfig>(
   primitives: PrimitiveConfig<TConfig>,

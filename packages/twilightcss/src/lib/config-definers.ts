@@ -1,4 +1,4 @@
-import { PrimitiveConfig, BaseConfig, TwTheme, ShadcnTheme } from "../types";
+import { PrimitiveConfig, BaseConfig, TwTheme, ShadcnTheme } from "@/types";
 
 export const definePrimitives = <TConfig extends BaseConfig>(
   primitives: PrimitiveConfig<TConfig>

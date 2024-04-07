@@ -1,7 +1,7 @@
-import { BaseConfig, PrimitiveConfig } from "../types";
-import { objectEntries, objectToCss } from "../utils";
+import { BaseConfig, PrimitiveConfig } from "@/types";
+import { objectEntries, objectToCss } from "@/utils";
 import { oklch } from "culori";
-function clean(value: number, precision = 2): number {
+function cleanParam(value: number, precision = 2): number {
   return (
     Math.round(parseFloat((value * 10 ** precision).toFixed(precision))) /
     10 ** precision
@@ -24,7 +24,8 @@ export function handlePrimitives<TConfig extends BaseConfig>(
       const shade = String(shadeProp);
       const colorShade = shade === "DEFAULT" ? color : `${color}-${shade}`;
       const property = `--clr-${colorShade}`;
-      cssProperties[property] = `${clean(l) * 100}% ${clean(c)} ${clean(h)}`;
+      cssProperties[property] =
+        `${cleanParam(l) * 100}% ${cleanParam(c)} ${cleanParam(h)}`;
       currentColor[shade] = `oklch(var(${property}) / <alpha-value>)`;
     });
     twPresetPrimitives[color] = currentColor;

@@ -1,4 +1,4 @@
-import { StyleObject } from "./types";
+import { StyleObject } from "@/types";
 
 export function objectEntries<TObj extends object>(obj: TObj) {
   return Object.entries(obj) as [keyof TObj, TObj[keyof TObj]][];
