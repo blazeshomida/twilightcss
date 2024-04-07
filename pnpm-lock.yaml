@@ -29,19 +29,16 @@ importers:
 
   packages/twilightcss:
     dependencies:
+      '@types/culori':
+        specifier: ^2.1.0
+        version: 2.1.0
       culori:
         specifier: ^4.0.1
         version: 4.0.1
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.1
-      typescript:
-        specifier: ^5.3.3
-        version: 5.4.2
     devDependencies:
-      '@types/culori':
-        specifier: ^2.1.0
-        version: 2.1.0
       '@vitest/coverage-v8':
         specifier: ^1.4.0
         version: 1.4.0(vitest@1.4.0)
@@ -51,6 +48,9 @@ importers:
       tsup:
         specifier: ^8.0.2
         version: 8.0.2(postcss@8.4.35)(typescript@5.4.2)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.4.2
       vite-tsconfig-paths:
         specifier: ^4.3.2
         version: 4.3.2(typescript@5.4.2)
@@ -897,7 +897,7 @@ packages:
 
   /@types/culori@2.1.0:
     resolution: {integrity: sha512-4uJT5CcC9Mi8mACkWShsPHqILMWL0OqoTsfoLJUGzN1mcipcepmmEdzU8b9L1KwyRNN3rnQO39ylI/2VR850zw==}
-    dev: true
+    dev: false
 
   /@types/debug@4.1.12:
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
