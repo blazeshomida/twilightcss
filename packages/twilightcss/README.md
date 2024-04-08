@@ -6,6 +6,26 @@ TwilightCSS provides a streamlined, powerful theming solution for TailwindCSS, d
 
 > **Documentation in Progress:** For more details and updates, check out the [docs directory](https://github.com/blazeshomida/twilightcss/tree/main/apps/docs/src/content/docs) in our repository.
 
+## Features and Benefits
+
+TwilightCSS elevates TailwindCSS projects by introducing a robust, TypeScript-powered theming system. This innovative tool simplifies the development workflow, significantly reducing redundancy and boosting the maintainability of themes.
+
+### Key Features
+
+- 💡 **TypeScript Integration and Centralized Theme Management**: TwilightCSS harnesses TypeScript for defining themes, ensuring type safety and autocompletion, alongside easier refactoring. This integration allows for quick updates and consistent application of themes across projects from a singular, centralized location, dramatically simplifying theme development and maintenance.
+
+- 🔄 **Dynamic Theming Capabilities**: With TwilightCSS, switching between themes or adjusting theme properties is seamless, making it perfect for applications requiring multiple themes or dynamic user-selected themes. This dynamic capability, built atop a seamless integration with TailwindCSS, ensures developers familiar with TailwindCSS can easily implement versatile, dynamic theming strategies without stepping outside the Tailwind ecosystem.
+
+- 🌉 **Extended Support for Shadcn Components**: Beyond its core functionality with TailwindCSS, TwilightCSS offers specialized support for theming Shadcn components. This feature represents a bridge between TailwindCSS's utility-first approach and the component-driven architecture of Shadcn, enabling developers to maintain a cohesive look and feel across diverse elements within their projects.
+
+### Benefits
+
+- 🚀 **Enhanced Productivity**: TwilightCSS's streamlined approach reduces manual effort in theme updates and leverages TypeScript's features to expedite the development process. Developers benefit from an accelerated project lifecycle, from initiation to deployment, thanks to a more intuitive theming process.
+
+- 🛠️ **Improved Project Maintainability and Flexibility**: The fusion of centralized theme management with TypeScript’s robust capabilities not only enhances project scalability and adaptability but also simplifies the task of maintaining a consistent design language across large projects. Furthermore, TwilightCSS's ability to customize and extend themes—including Shadcn components—ensures that projects can grow and evolve without losing coherence or aesthetic appeal.
+
+TwilightCSS is tailored specifically for TailwindCSS, with added capabilities for seamless theming of Shadcn components, making it an ideal solution for developers seeking to create customizable, dynamic user experiences with ease. This focus on compatibility and extendibility positions TwilightCSS as a forward-thinking toolkit for overcoming web development theming challenges.
+
 ## Installation
 
 Install TwilightCSS with your preferred package manager:
@@ -15,7 +35,7 @@ Install TwilightCSS with your preferred package manager:
 pnpm install -D @twilightcss/twilightcss
 
 # Using npm
-npm install --save-dev @twilightcss/twilightcss
+npm install -D @twilightcss/twilightcss
 
 # Using yarn
 yarn add -D @twilightcss/twilightcss
