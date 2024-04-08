@@ -11,9 +11,8 @@ export function createTwilight<TConfig extends BaseConfig>(
   const { twPluginPrimitives, twPresetPrimitives } =
     handlePrimitives(primitives);
   const { twPresetTokens, twPluginThemes } = handleThemes(themeOptions);
-  const twilightPlugin = plugin(({ addBase }) => {
-    addBase(deepMerge(twPluginPrimitives, twPluginThemes));
-  });
+  const base = deepMerge(twPluginPrimitives, twPluginThemes);
+  const twilightPlugin = plugin(({ addBase }) => addBase(base));
 
   return {
     twilightPlugin,
