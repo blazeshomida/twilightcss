@@ -25,27 +25,35 @@ type TWTokens<TConfig extends BaseConfig> = {
   borderColor?: Token<TConfig>;
 };
 
-type ShadcnTokens<TConfig extends BaseConfig> = Partial<{
-  background: `${TConfig["color"]}-${TConfig["shade"]}`;
-  foreground: `${TConfig["color"]}-${TConfig["shade"]}`;
-  card: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "card-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  popover: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "popover-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  primary: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "primary-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  secondary: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "secondary-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  muted: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "muted-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  accent: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "accent-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  destructive: `${TConfig["color"]}-${TConfig["shade"]}`;
-  "destructive-foreground": `${TConfig["color"]}-${TConfig["shade"]}`;
-  border: `${TConfig["color"]}-${TConfig["shade"]}`;
-  input: `${TConfig["color"]}-${TConfig["shade"]}`;
-  ring: `${TConfig["color"]}-${TConfig["shade"]}`;
-}>;
+type ShadcnTokens<
+  TConfig extends BaseConfig,
+  TColorShade extends
+    | `${TConfig["color"]}-${TConfig["shade"]}`
+    | TConfig["color"] =
+    | `${TConfig["color"]}-${TConfig["shade"]}`
+    | TConfig["color"],
+> = Record<string, TColorShade> &
+  Partial<{
+    background: TColorShade;
+    foreground: TColorShade;
+    card: TColorShade;
+    "card-foreground": TColorShade;
+    popover: TColorShade;
+    "popover-foreground": TColorShade;
+    primary: TColorShade;
+    "primary-foreground": TColorShade;
+    secondary: TColorShade;
+    "secondary-foreground": TColorShade;
+    muted: TColorShade;
+    "muted-foreground": TColorShade;
+    accent: TColorShade;
+    "accent-foreground": TColorShade;
+    destructive: TColorShade;
+    "destructive-foreground": TColorShade;
+    border: TColorShade;
+    input: TColorShade;
+    ring: TColorShade;
+  }>;
 
 type SelectorTokens<TConfig extends BaseConfig, TToken = TWTokens<TConfig>> = {
   selectors: string | string[];
