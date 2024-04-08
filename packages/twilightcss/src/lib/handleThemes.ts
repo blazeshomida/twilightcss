@@ -4,8 +4,8 @@ import {
   ShadcnTheme,
   ThemeOptions,
   TwTheme,
-} from "../types";
-import { objectEntries, objectToCss } from "../utils";
+} from "@/types";
+import { objectEntries, objectToCss } from "@/utils";
 
 const validMediaArray = (
   media: MediaProp | MediaProp[]
@@ -79,10 +79,9 @@ function handleShadcnTokens<TConfig extends BaseConfig>(
   const currentTokens: Record<string, Record<string, string>> = {};
   const currentTheme: Record<string, string> = {};
   objectEntries(tokens).forEach(([token, value]) => {
-    if (!value) return;
+    if (!value || !token) return;
     const cssVarName = `--${token}`;
     const twExtendsString = `oklch(var(${cssVarName}) / <alpha-value>)`;
-    currentTheme[cssVarName] = `var(--clr-${value})`;
     if (token.includes("-")) {
       const [background] = token.split("-");
       if (!background) return;
@@ -96,6 +95,8 @@ function handleShadcnTokens<TConfig extends BaseConfig>(
         DEFAULT: twExtendsString,
       };
     }
+
+    currentTheme[cssVarName] = `var(--clr-${value})`;
   });
   return { currentTokens: { colors: currentTokens }, currentTheme };
 }
