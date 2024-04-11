@@ -18,7 +18,7 @@
     "tailwind"
   ],
   "author": "Blaze Shomida",
-  "license": "ISC",
+  "license": "MIT",
   "peerDependencies": {
     "tailwindcss": "^3.4.1"
   },
