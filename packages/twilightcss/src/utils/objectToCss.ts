@@ -1,33 +1,4 @@
-import { StyleObject } from "@/types";
-
-export function objectEntries<TObj extends object>(obj: TObj) {
-  return Object.entries(obj) as [keyof TObj, TObj[keyof TObj]][];
-}
-
-type AnyObject = Record<PropertyKey, any>;
-
-function objectKeys<T extends AnyObject>(object: T) {
-  return Object.keys(object) as (keyof T)[];
-}
-
-function isObject(item: any): item is AnyObject {
-  return item && typeof item === "object" && !Array.isArray(item);
-}
-
-export function deepMerge<Target extends AnyObject, Source extends AnyObject>(
-  target: Target,
-  source: Source
-): Target & Source {
-  let output: Target & Source = Object.assign({}, target);
-  objectKeys(source).forEach((key) => {
-    if (!isObject(source[key]) || !(key in target)) {
-      output[key] = source[key];
-    } else {
-      output[key] = deepMerge(target[key], source[key]);
-    }
-  });
-  return output;
-}
+import { objectEntries } from "@/utils/object-fills";
 
 /**
  * Converts a JavaScript object representing CSS styles into a CSS string.
@@ -65,6 +36,10 @@ export function deepMerge<Target extends AnyObject, Source extends AnyObject>(
  * // }
  * ```
  */
+type StyleObject = {
+  [key: string]: string | number | StyleObject;
+};
+
 export function objectToCss(styleObject: StyleObject, indentLevel = 0): string {
   let cssString = "";
   const indent = "\t".repeat(indentLevel);
