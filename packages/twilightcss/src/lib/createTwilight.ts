@@ -1,6 +1,10 @@
 import plugin from "tailwindcss/plugin";
-import { BaseConfig, PrimitiveConfig, ThemeOptions } from "@/types";
-import { deepMerge } from "@/utils";
+import { deepMerge } from "@/utils/deepMerge";
+import type {
+  BaseConfig,
+  PrimitiveConfig,
+  ThemeOptions,
+} from "@/types/config-types";
 import { handlePrimitives } from "./handlePrimitives";
 import { handleThemes } from "./handleThemes";
 

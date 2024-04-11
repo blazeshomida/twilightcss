@@ -1,11 +1,12 @@
-import {
+import type {
   BaseConfig,
   MediaProp,
   ShadcnTheme,
   ThemeOptions,
   TwTheme,
-} from "@/types";
-import { objectEntries, objectToCss } from "@/utils";
+} from "@/types/config-types";
+import { objectEntries } from "@/utils/object-fills";
+import { objectToCss } from "@/utils/objectToCss";
 
 const validMediaArray = (
   media: MediaProp | MediaProp[]
