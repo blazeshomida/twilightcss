@@ -1,6 +1,8 @@
-import { BaseConfig, PrimitiveConfig } from "@/types";
-import { objectEntries, objectToCss } from "@/utils";
 import { oklch } from "culori";
+import { BaseConfig, PrimitiveConfig } from "@/types/config-types";
+import { objectEntries } from "@/utils/object-fills";
+import { objectToCss } from "@/utils/objectToCss";
+import { DEFAULT_PRIMITIVES } from "./constants";
 function cleanParam(value: number, precision = 2): number {
   return (
     Math.round(parseFloat((value * 10 ** precision).toFixed(precision))) /
@@ -18,23 +20,10 @@ export function handlePrimitives<TConfig extends BaseConfig>(
     "--clr-black": "0% 0 0",
     "--clr-white": "100% 0 0",
   };
-  const twPresetPrimitives: Record<string, Record<string, string>> = {
-    inherit: {
-      DEFAULT: "var(--clr-inherit) ",
-    },
-    current: {
-      DEFAULT: "var(--clr-current) ",
-    },
-    transparent: {
-      DEFAULT: "var(--clr-transparent)",
-    },
-    black: {
-      DEFAULT: "oklch(var(--clr-black) / <alpha-value>)",
-    },
-    white: {
-      DEFAULT: "oklch(var(--clr-white) / <alpha-value>)",
-    },
-  };
+  const twPresetPrimitives: Record<
+    string,
+    Record<string, string>
+  > = DEFAULT_PRIMITIVES;
   objectEntries(primitives).forEach(([color, shades]) => {
     if (!shades) return;
     const currentColor: Record<string, string> = {};
