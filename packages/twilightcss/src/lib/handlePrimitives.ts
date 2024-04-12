@@ -2,7 +2,7 @@ import { oklch } from "culori";
 import { BaseConfig, PrimitiveConfig } from "@/types/config-types";
 import { objectEntries } from "@/utils/object-fills";
 import { objectToCss } from "@/utils/objectToCss";
-import { DEFAULT_PRIMITIVES } from "./constants";
+import { DEFAULT_CSS_VARIABLES, DEFAULT_PRIMITIVES } from "./constants";
 function cleanParam(value: number, precision = 2): number {
   return (
     Math.round(parseFloat((value * 10 ** precision).toFixed(precision))) /
@@ -13,13 +13,7 @@ function cleanParam(value: number, precision = 2): number {
 export function handlePrimitives<TConfig extends BaseConfig>(
   primitives: PrimitiveConfig<TConfig>
 ) {
-  const cssProperties: Record<string, string> = {
-    "--clr-inherit": "inherit",
-    "--clr-current": "currentColor",
-    "--clr-transparent": "transparent",
-    "--clr-black": "0% 0 0",
-    "--clr-white": "100% 0 0",
-  };
+  const cssProperties: Record<string, string> = DEFAULT_CSS_VARIABLES;
   const twPresetPrimitives: Record<
     string,
     Record<string, string>

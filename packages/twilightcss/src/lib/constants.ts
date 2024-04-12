@@ -15,3 +15,11 @@ export const DEFAULT_PRIMITIVES = {
     DEFAULT: "oklch(var(--clr-white) / <alpha-value>)",
   },
 };
+
+export const DEFAULT_CSS_VARIABLES = {
+  "--clr-inherit": "inherit",
+  "--clr-current": "currentColor",
+  "--clr-transparent": "transparent",
+  "--clr-black": "0% 0 0",
+  "--clr-white": "100% 0 0",
+};
