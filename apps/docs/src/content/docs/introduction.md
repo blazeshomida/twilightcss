@@ -64,14 +64,14 @@ With TwilightCSS, changing a theme's primary color is as simple as updating your
 
 ```typescript
 // Using TwilightCSS for centralized theme management
-const lightTheme = defineTheme<MyConfig>({
+const lightTheme: TwTheme<Config> = {
   selectors: [":root", "[data-theme='light']"],
   tokens: {
     textColor: {
       brand: { primary: "brand-500", secondary: "brand-800" },
     },
   },
-});
+};
 ```
 
 ## Conclusion
