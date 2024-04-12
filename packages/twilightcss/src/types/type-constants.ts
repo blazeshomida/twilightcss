@@ -1,3 +1,5 @@
+import { NAMED_COLORS_ARRAY } from "@/lib/constants";
+
 // Type Constants
 export type MEDIA_QUERIES =
   | "(prefers-color-scheme: dark)"
@@ -20,3 +22,19 @@ export type MEDIA_QUERIES =
   | "(orientation: landscape)";
 
 export type AnyObject = Record<PropertyKey, any>;
+
+export type NAMED_COLORS_TYPE = (typeof NAMED_COLORS_ARRAY)[number];
+type CSS_COLOR_FN_NAME =
+  | "rgba"
+  | "rgb"
+  | "hsla"
+  | "hsl"
+  | "hwb"
+  | "color"
+  | "oklab"
+  | "oklch"
+  | "lab"
+  | "lch"
+  | "light-dark"
+  | "color-mix";
+export type VALID_CSS_COLOR_FN = `${CSS_COLOR_FN_NAME}(${string})`;

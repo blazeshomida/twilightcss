@@ -1,4 +1,5 @@
-import { MEDIA_QUERIES } from "@/types/type-constants";
+import { MEDIA_QUERIES, NAMED_COLORS_TYPE } from "@/types/type-constants";
+import { VALID_CSS_COLOR_FN } from "./type-constants";
 
 export type BaseConfig = {
   color: string;
@@ -10,7 +11,10 @@ export type MediaProp = [MEDIA_QUERIES, string];
 
 export type PrimitiveConfig<TConfig extends BaseConfig> = {
   [Color in TConfig["color"]]?: {
-    [Shade in TConfig["shade"] | "DEFAULT"]?: string;
+    [Shade in TConfig["shade"] | "DEFAULT"]?:
+      | NAMED_COLORS_TYPE
+      | VALID_CSS_COLOR_FN
+      | `#${string}`;
   };
 };
 
