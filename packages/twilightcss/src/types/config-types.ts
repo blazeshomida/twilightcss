@@ -1,21 +1,28 @@
+import { MEDIA_QUERIES, NAMED_COLORS_TYPE } from "@/types/type-constants";
+import { VALID_CSS_COLOR_FN } from "./type-constants";
+
 export type BaseConfig = {
   color: string;
   shade: string;
   variant: string;
-};
-export type Token<TConfig extends BaseConfig> = {
-  [Color in TConfig["color"]]?: {
-    [Variant in TConfig["variant"] | "DEFAULT"]?:
-      | `${Color}-${TConfig["shade"]}`
-      | Color;
-  };
 };
 
 export type MediaProp = [MEDIA_QUERIES, string];
 
 export type PrimitiveConfig<TConfig extends BaseConfig> = {
   [Color in TConfig["color"]]?: {
-    [Shade in TConfig["shade"] | "DEFAULT"]?: string;
+    [Shade in TConfig["shade"] | "DEFAULT"]?:
+      | NAMED_COLORS_TYPE
+      | VALID_CSS_COLOR_FN
+      | `#${string}`;
+  };
+};
+
+export type Token<TConfig extends BaseConfig> = {
+  [Color in TConfig["color"]]?: {
+    [Variant in TConfig["variant"] | "DEFAULT"]?:
+      | `${Color}-${TConfig["shade"]}`
+      | Color;
   };
 };
 
@@ -75,10 +82,6 @@ export type TwTheme<TConfig extends BaseConfig> =
   | MediaTokens<TConfig>
   | (SelectorTokens<TConfig> & MediaTokens<TConfig>);
 
-export type StyleObject = {
-  [key: string]: string | number | StyleObject;
-};
-
 export type ThemeOptions<TConfig extends BaseConfig> =
   | {
       type?: "tailwindcss";
@@ -88,24 +91,3 @@ export type ThemeOptions<TConfig extends BaseConfig> =
       type?: "shadcn";
       themes: ShadcnTheme<TConfig>[];
     };
-
-// Type Constants
-type MEDIA_QUERIES =
-  | "(prefers-color-scheme: dark)"
-  | "(prefers-color-scheme: light)"
-  | "(prefers-color-scheme: no-preference)"
-  | "(prefers-reduced-motion: reduce)"
-  | "(prefers-reduced-motion: no-preference)"
-  | "(prefers-contrast: more)"
-  | "(prefers-contrast: less)"
-  | "(prefers-contrast: no-preference)"
-  | "(prefers-reduced-transparency: reduce)"
-  | "(prefers-reduced-transparency: no-preference)"
-  | "(prefers-reduced-data: reduce)"
-  | "(prefers-reduced-data: no-preference)"
-  | "(forced-colors: active)"
-  | "(forced-colors: none)"
-  | "(inverted-colors: inverted)"
-  | "(inverted-colors: none)"
-  | "(orientation: portrait)"
-  | "(orientation: landscape)";

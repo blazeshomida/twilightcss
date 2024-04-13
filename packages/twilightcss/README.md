@@ -43,80 +43,62 @@ yarn add -D @twilightcss/twilightcss
 
 ## Usage
 
-Implement TwilightCSS in your project in four straightforward steps, each enhanced with TypeScript for better insight and productivity.
+Implement TwilightCSS in your project in three straightforward steps. Each step is designed to be flexible, allowing you to enhance your setup with TypeScript for better insight and productivity.
 
-> **Note:** TwilightCSS is continuously evolving; changes are documented as they are made.
+> **Note:** For TypeScript users, it's recommended to define your configurations using the exported types for strong typing. Begin by defining a `Config` type:
 
-### Step 1: Define Config Types
-
-First, define your configuration types. This step utilizes TypeScript for autocompletion and type-checking to guide your theme's structure.
-
-**Base Configuration Example:**
+**Config Type Example:**
 
 ```typescript
-type BaseConfig = {
-  color: string;
-  shade: string;
-  variant: string;
-};
-```
-
-**Expand with MyConfig:**
-
-Here, specify your theme's colors, shades, and variants. Utilize Union Types for sets of permissible values, offering flexibility in naming conventions and styles.
-
-```typescript
-type MyConfig = {
-  // Semantic labels or visual names like "red", "green", "blue".
+// Define your configuration types for enhanced type safety and autocompletion.
+type Config = {
   color: "brand" | "error" | "success" | "accent";
-  // Numeric values for intensity or descriptive like "lightest", "light", "dark", "darkest".
   shade: "50" | "100" | "800" | "900";
-  // Define variants to tailor to different UI components or states.
   variant: "primary" | "secondary" | "tertiary";
 };
 ```
 
-**Advanced Variants with Template Literals:**
+### Step 1: Define Primitives
 
-Combine base variants with states using template literal types for dynamic, extensive options, fully supported by TypeScript.
-
-```typescript
-type MyVariant = "primary" | "secondary";
-type MyState = "hover" | "pressed" | "focused";
-// Generates combinations such as "primary-hover", "secondary-pressed"
-type MyVariantState = `${MyVariant}-${MyState}`;
-```
-
-### Step 2: Define Primitives
-
-Define your color primitives with `definePrimitives<MyConfig>()`, customizing the function to fit your configuration precisely.
+Define your color primitives. If you are using TypeScript, leverage the `PrimitiveConfig<Config>` type for type safety.
 
 **Primitives Example:**
 
 ```typescript
-import { definePrimitives, tailwindPrimitives } from "@twilightcss/twilightcss";
+// For TypeScript:
+import { PrimitiveConfig, tailwindPrimitives } from "@twilightcss/twilightcss";
 
-const primitives = definePrimitives<MyConfig>({
+const primitives: PrimitiveConfig<Config> = {
   brand: {
-    // Any valid CSS color string is usable here.
     "50": "#E3F2FD", // Lightest brand shade
     "900": "#0D47A1", // Darkest brand shade
   },
   error: tailwindPrimitives.red, // Tailwind's predefined colors for convenience
-  // Additional colors as needed...
-});
+  // Additional colors...
+};
+
+// For JavaScript:
+const primitives = {
+  brand: {
+    "50": "#E3F2FD",
+    "900": "#0D47A1",
+  },
+  error: tailwindPrimitives.red,
+  // Additional colors...
+};
 ```
 
-### Step 3: Define Themes
+### Step 2: Define Themes
 
-Create themes with `defineTheme<MyConfig>()`, ensuring alignment with your config. Note: For Shadcn themes, switch `type` to "shadcn" in `createTwilight()`.
+Create your themes. If you are using TypeScript, utilize `TwTheme` for Tailwind themes and `ShadcnTheme` for Shadcn components to ensure type safety and alignment with your config.
 
 **Tailwind Theme Example:**
 
 ```typescript
-import { defineTheme } from "@twilightcss/twilightcss";
+// For TypeScript:
+import { TwTheme } from "@twilightcss/twilightcss";
 
-const tailwindLightTheme = defineTheme<MyConfig>({
+const tailwindLightTheme: TwTheme<Config> = {
   selectors: [":root", "[data-theme='light']"],
   media: ["(prefers-color-scheme: light)", ":root"],
   tokens: {
@@ -124,17 +106,30 @@ const tailwindLightTheme = defineTheme<MyConfig>({
       brand: { primary: "brand-900", secondary: "brand-50" },
       // Expand with more definitions as needed...
     },
-    // Define additional tokens for backgroundColor, borderColor, etc...
+    // Additional tokens...
   },
-});
+};
+
+// For JavaScript:
+const tailwindLightTheme = {
+  selectors: [":root", "[data-theme='light']"],
+  media: ["(prefers-color-scheme: light)", ":root"],
+  tokens: {
+    textColor: {
+      brand: { primary: "brand-900", secondary: "brand-50" },
+    },
+    // Additional tokens...
+  },
+};
 ```
 
 **Shadcn Theme Example:**
 
 ```typescript
-import { defineShadcnTheme } from "@twilightcss/twilightcss";
+// For TypeScript:
+import { ShadcnTheme } from "@twilightcss/twilightcss";
 
-const shadcnLightTheme = defineShadcnTheme<MyConfig>({
+const shadcnLightTheme: ShadcnTheme<Config> = {
   selectors: [":root", ".light"],
   media: ["(prefers-color-scheme: light)", ":root"],
   tokens: {
@@ -144,31 +139,48 @@ const shadcnLightTheme = defineShadcnTheme<MyConfig>({
     "primary-foreground": "error-50",
     // Additional tokens...
   },
-});
+};
+
+// For JavaScript:
+const shadcnLightTheme = {
+  selectors: [":root", ".light"],
+  media: ["(prefers-color-scheme: light)", ":root"],
+  tokens: {
+    background: "brand-50",
+    foreground: "brand-900",
+    primary: "error-800",
+    "primary-foreground": "error-50",
+    // Additional tokens...
+  },
+};
 ```
 
-> Note: To use Shadcn themes, set the `type` in `createTwilight()` to "shadcn" and define themes using `defineShadcnTheme<MyConfig>()`. Tailwind and Shadcn themes have separate handling mechanisms and are not interchangeable within the same `type`.
+> **Note on Shadcn Themes:** When using Shadcn themes with TwilightCSS, set the `type` parameter in `createTwilight()` to "shadcn" to ensure proper handling of these themes. Shadcn themes require specific configuration to align with the Shadcn component library, which differs from standard Tailwind theming. This setup allows you to maintain a cohesive look across different UI components by leveraging Shadcn-specific properties and tokens.
 
-### Step 4: Integrate with Tailwind Configuration
+### Step 3: Integrate with Tailwind Configuration
 
-Finalize by integrating TwilightCSS with your Tailwind configuration using `createTwilight`, combining your themes into a unified setup.
+Finalize by integrating TwilightCSS with your Tailwind configuration using `createTwilight()`. This function consolidates your themes into a unified setup tailored for either Tailwind or Shadcn themes.
 
 **Integration Example:**
 
 ```typescript
 import { createTwilight } from "@twilightcss/twilightcss";
 
-const { twilightColors, twilightExtends, twilightPlugin } =
-  createTwilight<MyConfig>(primitives, {
-    themes: [tailwindLightTheme], // Array of your themes
-  });
-
-/*
-const { twilightColors, twilightExtends, twilightPlugin } = createTwilight<MyConfig>(
+// This setup utilizes your previously defined primitives and themes
+const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(
   primitives,
   {
-    type: "shadcn", // Use "shadcn" for Shadcn themes; defaults to 'tailwindcss'
-    themes: [shadcnLightTheme], // Array of your themes
+    themes: [tailwindLightTheme], // Tailwind themes configuration
+  }
+);
+
+// Uncomment the following block if you are using Shadcn themes
+/*
+const { twilightColors, twilightExtends, twilightPlugin } = createTwilight(
+  primitives,
+  {
+    type: "shadcn", // Specifically for Shadcn themes
+    themes: [shadcnLightTheme], // Shadcn themes configuration
   }
 );
 */
@@ -191,7 +203,7 @@ export default {
 
 ## Conclusion
 
-TwilightCSS simplifies the theming process in TailwindCSS with a type-safe, structured approach, supporting a scalable and maintainable design system.
+TwilightCSS simplifies the theming process in TailwindCSS with a flexible, structured approach, supporting scalable and maintainable design systems with or without TypeScript.
 
 ## Contributing
 

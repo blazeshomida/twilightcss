@@ -1,27 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-  definePrimitives,
-  defineShadcnTheme,
-  defineTheme,
-  createTwilight,
-} from "@/index";
-const DEFAULT_COLORS = {
-  black: {
-    DEFAULT: "oklch(var(--clr-black) / <alpha-value>)",
-  },
-  current: {
-    DEFAULT: "var(--clr-current) ",
-  },
-  inherit: {
-    DEFAULT: "var(--clr-inherit) ",
-  },
-  transparent: {
-    DEFAULT: "var(--clr-transparent)",
-  },
-  white: {
-    DEFAULT: "oklch(var(--clr-white) / <alpha-value>)",
-  },
-};
+import { createTwilight, PrimitiveConfig, TwTheme, ShadcnTheme } from "@/index";
+import { DEFAULT_PRIMITIVES } from "@/lib/constants";
 
 type Config = {
   variant: "primary" | "secondary";
@@ -47,7 +26,7 @@ type Config = {
     | "900"
     | "950";
 };
-const primitives = definePrimitives<Config>({
+const primitives: PrimitiveConfig<Config> = {
   neutral: {
     "50": "#fafafa",
     "300": "#d4d4d4",
@@ -58,9 +37,9 @@ const primitives = definePrimitives<Config>({
   red: {
     "500": "#ef4444",
   },
-});
+};
 
-const tailwindDarkTheme = defineTheme<Config>({
+const tailwindDarkTheme: TwTheme<Config> = {
   selectors: ":root",
   media: [["(prefers-color-scheme: dark)", ":root"]],
   tokens: {
@@ -87,7 +66,7 @@ const tailwindDarkTheme = defineTheme<Config>({
       },
     },
   },
-});
+};
 
 describe("createTwilight(no-type): with tailwindcss theme, no type passed should default to tailwindcss", () => {
   const { twilightColors, twilightExtends } = createTwilight(primitives, {
@@ -103,7 +82,7 @@ describe("createTwilight(no-type): with tailwindcss theme, no type passed should
         "950": "oklch(var(--clr-neutral-950) / <alpha-value>)",
       },
       red: { "500": "oklch(var(--clr-red-500) / <alpha-value>)" },
-      ...DEFAULT_COLORS,
+      ...DEFAULT_PRIMITIVES,
     });
   });
 
@@ -132,7 +111,7 @@ describe("createTwilight(no-type): with tailwindcss theme, no type passed should
 });
 describe("createTwilight(tailwindcss): with tailwindcss theme, type tailwindcss passed", () => {
   it("twilightColors: maps primitives to the primitives css custom properties for tailwind", () => {
-    const darkTheme = defineTheme<Config>({
+    const darkTheme: TwTheme<Config> = {
       selectors: ":root",
       media: [["(prefers-color-scheme: dark)", ":root"]],
       tokens: {
@@ -159,7 +138,7 @@ describe("createTwilight(tailwindcss): with tailwindcss theme, type tailwindcss 
           },
         },
       },
-    });
+    };
 
     const { twilightColors, twilightExtends } = createTwilight(primitives, {
       type: "tailwindcss",
@@ -174,7 +153,7 @@ describe("createTwilight(tailwindcss): with tailwindcss theme, type tailwindcss 
         "950": "oklch(var(--clr-neutral-950) / <alpha-value>)",
       },
       red: { "500": "oklch(var(--clr-red-500) / <alpha-value>)" },
-      ...DEFAULT_COLORS,
+      ...DEFAULT_PRIMITIVES,
     });
   });
 
@@ -206,7 +185,7 @@ describe("createTwilight(tailwindcss): with tailwindcss theme, type tailwindcss 
   });
 });
 
-const shadcnDark = defineShadcnTheme<Config>({
+const shadcnDark: ShadcnTheme<Config> = {
   selectors: [".dark"],
   media: ["(prefers-color-scheme: dark)", ":root"],
   tokens: {
@@ -219,9 +198,9 @@ const shadcnDark = defineShadcnTheme<Config>({
     accent: "green-100",
     "accent-foreground": "green-600",
   },
-});
+};
 
-const shadcnLight = defineShadcnTheme<Config>({
+const shadcnLight: ShadcnTheme<Config> = {
   selectors: [":root", ".light"],
   media: ["(prefers-color-scheme: light)", ":root"],
   tokens: {
@@ -234,9 +213,9 @@ const shadcnLight = defineShadcnTheme<Config>({
     accent: "green-600",
     "accent-foreground": "green-50",
   },
-});
+};
 
-const shadcnInvalidDark = defineShadcnTheme<Config>({
+const shadcnInvalidDark: ShadcnTheme<Config> = {
   selectors: [".dark"],
   media: ["(prefers-color-scheme: dark)", ":root"],
   tokens: {
@@ -249,9 +228,9 @@ const shadcnInvalidDark = defineShadcnTheme<Config>({
     accent: "green-100",
     "accent-foreground": "green",
   },
-});
+};
 
-const shadcnInvalidLight = defineShadcnTheme<Config>({
+const shadcnInvalidLight: ShadcnTheme<Config> = {
   selectors: [":root", ".light"],
   media: ["(prefers-color-scheme: light)", ":root"],
   tokens: {
@@ -263,7 +242,7 @@ const shadcnInvalidLight = defineShadcnTheme<Config>({
     accent: "green-600",
     "accent-foreground": "green-50",
   },
-});
+};
 describe("createTwilight(shadcn): with tailwindcss theme, type shadcn passed", () => {
   it("twilightColors: maps primitives to the primitives css custom properties for tailwind", () => {
     const { twilightColors } = createTwilight<Config>(primitives, {
@@ -279,7 +258,7 @@ describe("createTwilight(shadcn): with tailwindcss theme, type shadcn passed", (
         "950": "oklch(var(--clr-neutral-950) / <alpha-value>)",
       },
       red: { "500": "oklch(var(--clr-red-500) / <alpha-value>)" },
-      ...DEFAULT_COLORS,
+      ...DEFAULT_PRIMITIVES,
     });
   });
 
