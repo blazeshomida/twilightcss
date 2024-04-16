@@ -1,6 +1,6 @@
-import { handlePrimitives } from "@/lib/handlePrimitives";
+import { handlePrimitives } from "@/core/handlePrimitives";
 import { TAILWIND_PRIMITIVES } from "@/themes/tailwind";
-import { DEFAULT_CSS_VARIABLES } from "@/lib/constants";
+import { DEFAULT_CSS_VARIABLES } from "@/core/constants";
 import { describe, expect, it } from "vitest";
 
 describe("handlePrimitives", () => {

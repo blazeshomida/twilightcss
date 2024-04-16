@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createTwilight, PrimitiveConfig, TwTheme, ShadcnTheme } from "@/index";
-import { DEFAULT_PRIMITIVES } from "@/lib/constants";
+import { DEFAULT_PRIMITIVES } from "@/core/constants";
 
 type Config = {
   variant: "primary" | "secondary";

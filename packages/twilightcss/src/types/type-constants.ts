@@ -1,4 +1,4 @@
-import { NAMED_COLORS_ARRAY } from "@/lib/constants";
+import { NAMED_COLORS_ARRAY } from "@/core/constants";
 
 // Type Constants
 export type MEDIA_QUERIES =
