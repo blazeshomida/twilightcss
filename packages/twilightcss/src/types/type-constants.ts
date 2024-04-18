@@ -43,7 +43,7 @@ export namespace Tailwind {
   export const colors = _colors;
   export type ColorName = keyof Omit<
     typeof _colors,
-    keyof typeof DEFAULT_TOKENS | DeprecatedColor
+    keyof ReturnType<typeof DEFAULT_TOKENS> | DeprecatedColor
   >;
   export type Shade =
     | "50"

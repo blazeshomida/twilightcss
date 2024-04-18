@@ -30,7 +30,7 @@ export function handlePrimitives(
       ":root": { ...DEFAULT_PRIMITIVES(prefix), ...twPrimitivesPlugin },
     },
     twilightPrimitives: {
-      colors: { ...DEFAULT_TOKENS, ...twilightPrimitives },
+      colors: { ...DEFAULT_TOKENS(prefix), ...twilightPrimitives },
     },
   };
 }
