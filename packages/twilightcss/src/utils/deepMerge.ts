@@ -1,21 +1,19 @@
-import { AnyObject } from "@/types/type-constants";
-import { objectKeys } from "./object-fills";
-
-function isObject(item: any): item is AnyObject {
-  return item && typeof item === "object" && !Array.isArray(item);
-}
+import { AnyObject } from "@/types/type-utils";
+import { isRecord, objectKeys } from "./object-fills";
 
 export function deepMerge<Target extends AnyObject, Source extends AnyObject>(
   target: Target,
-  source: Source
+  ...sources: Source[]
 ): Target & Source {
-  let output: Target & Source = Object.assign({}, target);
-  objectKeys(source).forEach((key) => {
-    if (!isObject(source[key]) || !(key in target)) {
-      output[key] = source[key];
-    } else {
-      output[key] = deepMerge(target[key], source[key]);
-    }
+  let output = Object.assign({}, target);
+  sources.forEach((source) => {
+    objectKeys(source).forEach((key) => {
+      if (!isRecord(source[key]) || !isRecord(output[key])) {
+        output[key] = source[key];
+      } else {
+        output[key] = deepMerge(output[key], source[key]);
+      }
+    });
   });
   return output;
 }
