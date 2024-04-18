@@ -1,139 +1,113 @@
-import type {
-  BaseConfig,
-  MediaProp,
-  ShadcnTheme,
-  ThemeOptions,
-  TwTheme,
-} from "@/types/config-types";
-import { objectEntries } from "@/utils/object-fills";
-import { objectToCss } from "@/utils/objectToCss";
+import { MediaProp, Theme, Tokens } from "@/types/config-types";
+import { AnyObject } from "@/types/type-utils";
+import { deepMerge } from "@/utils/deepMerge";
+import { objectKeys } from "@/utils/object-fills";
+import { Tailwind } from "@/types/type-constants";
+import { generatePaths } from "@/utils/generatePaths";
+import { handlePrefix } from "@/utils/format-utils";
 
 const validMediaArray = (
   media: MediaProp | MediaProp[]
 ): media is MediaProp[] => media.every(Array.isArray);
 
-function handleMedia(
+function handleMedia<TPrimitives, TKey extends PropertyKey>(
   media: MediaProp | MediaProp[],
-  currentTheme: Record<string, string>
+  currentTokens: Tokens<TPrimitives, TKey>,
+  twPluginThemes: AnyObject
 ) {
   const mediaArray = validMediaArray(media) ? media : [media];
-  return mediaArray.reduce(
-    (acc, [query, selector]) => ({
-      [`@media ${query}`]: {
-        [String(selector)]: currentTheme,
-      },
-      ...acc,
-    }),
-    {}
+  return Object.assign(
+    twPluginThemes,
+    deepMerge(
+      twPluginThemes,
+      mediaArray.reduce(
+        (acc, [query, selector]) => ({
+          [`@media ${query}`]: {
+            [String(selector)]: currentTokens,
+          },
+          ...acc,
+        }),
+        {}
+      )
+    )
   );
 }
 
-function handleSelectors(
+function handleSelectors<TPrimitives, TKey extends PropertyKey>(
   selectors: string | string[],
-  currentTheme: Record<string, string>
+  currentTokens: Tokens<TPrimitives, TKey>,
+  twPluginThemes: AnyObject
 ) {
   const selectorArray = Array.isArray(selectors) ? selectors : [selectors];
-  return {
-    [selectorArray.join(", ")]: currentTheme,
-  };
+  return Object.assign(
+    twPluginThemes,
+    deepMerge(twPluginThemes, {
+      [selectorArray.join(", ")]: currentTokens,
+    })
+  );
 }
 
-const twTokenTypeMap = {
-  textColor: "text",
-  backgroundColor: "bg",
-  borderColor: "border",
-} as const;
-type TwTokenTypes = keyof typeof twTokenTypeMap;
-type TwTokens = Record<string, Record<string, string>>;
-
-function handleTwTokens<TConfig extends BaseConfig>(
-  tokens: TwTheme<TConfig>["tokens"]
+function handleTokens<TPrimitives, TKey extends PropertyKey>(
+  tokens: Tokens<TPrimitives, TKey>,
+  twColorTokensConfig: Tailwind.Config,
+  prefix: string
 ) {
-  const currentTheme: Record<string, string> = {};
-  const currentTokens: Record<TwTokenTypes, TwTokens> = {
-    textColor: {},
-    backgroundColor: {},
-    borderColor: {},
-  };
-  objectEntries(tokens).forEach(([tokenType, colors]) => {
-    if (!colors) return;
-    const tokenShort = twTokenTypeMap[tokenType];
-    objectEntries(colors).forEach(([color, variants]) => {
-      if (!variants) return;
-      const currentTokenColor: Record<string, string> = {};
-      objectEntries(variants).forEach(([variantKey, colorShade]) => {
-        if (!colorShade) return;
-        const variant = String(variantKey);
-        const cssVarName = `--${tokenShort}-${color}-${variant}`;
-        currentTheme[cssVarName] = `var(--clr-${colorShade})`;
-        currentTokenColor[variant] =
-          `oklch(var(${cssVarName}) / <alpha-value>)`;
-      });
-      currentTokens[tokenType][color] = currentTokenColor;
+  const currentTokens: Tokens<TPrimitives, TKey> = {};
+  objectKeys(tokens).forEach((domain) => {
+    const { twPlugin, ...rest } = generatePaths(tokens[domain]!, {
+      handlers: {
+        twPlugin: ({ key, value, map }) => {
+          const domainPre = domain.endsWith("Color")
+            ? domain.split("Color")[0]
+            : domain;
+          map.set(
+            `--${handlePrefix(prefix)}${domainPre === "colors" ? "" : domainPre + "-"}${key}`,
+            `var(--${handlePrefix(prefix) + value})`
+          );
+        },
+
+        [domain]: ({
+          key,
+          map,
+        }: {
+          key: string;
+          map: Map<string, string>;
+        }): void => {
+          const domainPre = domain.endsWith("Color")
+            ? domain.split("Color")[0]
+            : domain;
+          map.set(
+            key,
+            `oklch(var(--${handlePrefix(prefix)}${domainPre === "colors" ? "" : domainPre + "-"}${key}) / <alpha-value>)`
+          );
+        },
+      },
     });
+    if (!twPlugin) return;
+    Object.assign(currentTokens, deepMerge(currentTokens, twPlugin));
+    Object.assign(twColorTokensConfig, deepMerge(twColorTokensConfig, rest));
   });
-  return { currentTokens, currentTheme };
+
+  return currentTokens;
 }
-function handleShadcnTokens<TConfig extends BaseConfig>(
-  tokens: ShadcnTheme<TConfig>["tokens"]
+
+export function handleThemes<TPrimitives, TKey extends PropertyKey = string>(
+  themes: Theme<TPrimitives, TKey>[],
+  prefix: string
 ) {
-  const currentTokens: Record<string, Record<string, string>> = {};
-  const currentTheme: Record<string, string> = {};
-  objectEntries(tokens).forEach(([token, value]) => {
-    if (!value || !token) return;
-    const cssVarName = `--${token}`;
-    const twExtendsString = `oklch(var(${cssVarName}) / <alpha-value>)`;
-    if (token.includes("-")) {
-      const [background] = token.split("-");
-      if (!background) return;
-      currentTokens[background] = {
-        ...currentTokens[background],
-        foreground: twExtendsString,
-      };
-    } else {
-      currentTokens[token] = {
-        ...currentTokens[token],
-        DEFAULT: twExtendsString,
-      };
-    }
-
-    currentTheme[cssVarName] = `var(--clr-${value})`;
-  });
-  return { currentTokens: { colors: currentTokens }, currentTheme };
-}
-function isTwTheme<TConfig extends BaseConfig>(
-  theme: TwTheme<TConfig> | ShadcnTheme<TConfig>,
-  type: "tailwindcss" | "shadcn"
-): theme is TwTheme<TConfig> {
-  return type === "tailwindcss";
-}
-
-export function handleThemes<TConfig extends BaseConfig>({
-  themes,
-  type = "tailwindcss",
-}: ThemeOptions<TConfig>) {
-  const twPluginThemes = {};
-  const twPresetTokens = {};
+  const twilightTokens: Partial<Record<Tailwind.ColorConfig, AnyObject>> = {};
+  const twTokensPlugin: AnyObject = {};
   themes.forEach((theme) => {
-    const { currentTheme, currentTokens } = isTwTheme(theme, type)
-      ? handleTwTokens(theme.tokens)
-      : handleShadcnTokens(theme.tokens);
-    Object.assign(twPresetTokens, currentTokens);
-
+    const currentTokens = handleTokens(theme.tokens, twilightTokens, prefix);
     if ("selectors" in theme) {
-      Object.assign(
-        twPluginThemes,
-        handleSelectors(theme.selectors, currentTheme)
-      );
+      handleSelectors(theme.selectors, currentTokens, twTokensPlugin);
     }
     if ("media" in theme) {
-      Object.assign(twPluginThemes, handleMedia(theme.media, currentTheme));
+      handleMedia(theme.media, currentTokens, twTokensPlugin);
     }
   });
-
   return {
-    cssThemes: objectToCss(twPluginThemes),
-    twPluginThemes,
-    twPresetTokens,
+    twTokensPlugin,
+    twilightTokens,
   };
 }
