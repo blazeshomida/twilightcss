@@ -6,7 +6,10 @@ export type MediaProp = [COLOR_MEDIA_QUERIES, string] | [string, string];
 type TokenConfig<TPrimitives, TKey extends PropertyKey> = Partial<
   Record<
     TKey,
-    NestedObject<Pathify<TPrimitives>, TKey | "DEFAULT"> | Pathify<TPrimitives>
+    | NestedObject<Pathify<TPrimitives> | "black" | "white", TKey | "DEFAULT">
+    | Pathify<TPrimitives>
+    | "black"
+    | "white"
   >
 >;
 
