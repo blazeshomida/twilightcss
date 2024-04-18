@@ -1,7 +1,3 @@
-export type {
-  PrimitiveConfig,
-  TwTheme,
-  ShadcnTheme,
-} from "@/types/config-types";
-export { TAILWIND_PRIMITIVES as tailwindPrimitives } from "@/core/constants";
+export type { Tailwind, Shadcn } from "@/types/type-constants";
+export type { Theme } from "@/types/config-types";
 export { createTwilight } from "@/core/createTwilight";
