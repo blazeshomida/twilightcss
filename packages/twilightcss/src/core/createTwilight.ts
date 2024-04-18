@@ -1,26 +1,38 @@
 import plugin from "tailwindcss/plugin";
+import { Theme } from "@/types/config-types";
+import { NestedObject } from "@/types/type-utils";
 import { deepMerge } from "@/utils/deepMerge";
-import type {
-  BaseConfig,
-  PrimitiveConfig,
-  ThemeOptions,
-} from "@/types/config-types";
 import { handlePrimitives } from "./handlePrimitives";
 import { handleThemes } from "./handleThemes";
+import { objectToCss } from "@/utils/objectToCss";
+import { NAMED_COLORS_TYPE, VALID_CSS_COLOR_FN } from "@/types/type-constants";
 
-export function createTwilight<TConfig extends BaseConfig>(
-  primitives: PrimitiveConfig<TConfig>,
-  themeOptions: ThemeOptions<TConfig>
-) {
-  const { twPluginPrimitives, twPresetPrimitives } =
-    handlePrimitives(primitives);
-  const { twPresetTokens, twPluginThemes } = handleThemes(themeOptions);
-  const base = deepMerge(twPluginPrimitives, twPluginThemes);
+export function createTwilight<
+  TPrimitives extends NestedObject<
+    VALID_CSS_COLOR_FN | NAMED_COLORS_TYPE | `#${string}`
+  >,
+  TKey extends PropertyKey,
+>({
+  primitives,
+  themes,
+  prefix = "clr",
+}: {
+  primitives: TPrimitives;
+  themes: Theme<TPrimitives, TKey>[];
+  prefix?: string;
+}) {
+  const { twPrimitivesPlugin, twilightPrimitives } = handlePrimitives(
+    primitives,
+    prefix
+  );
+  const { twTokensPlugin, twilightTokens } = handleThemes(themes, prefix);
+  const base = deepMerge(twPrimitivesPlugin, twTokensPlugin);
   const twilightPlugin = plugin(({ addBase }) => addBase(base));
 
   return {
+    twilightPrimitives,
+    twilightTokens,
     twilightPlugin,
-    twilightColors: twPresetPrimitives,
-    twilightExtends: twPresetTokens,
+    twilightCSS: objectToCss(base),
   };
 }
