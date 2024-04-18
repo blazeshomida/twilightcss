@@ -1,27 +1,17 @@
 import { NAMED_COLORS_ARRAY } from "@/core/constants";
 
 // Type Constants
-export type MEDIA_QUERIES =
+export type COLOR_MEDIA_QUERIES =
   | "(prefers-color-scheme: dark)"
   | "(prefers-color-scheme: light)"
   | "(prefers-color-scheme: no-preference)"
-  | "(prefers-reduced-motion: reduce)"
-  | "(prefers-reduced-motion: no-preference)"
   | "(prefers-contrast: more)"
   | "(prefers-contrast: less)"
   | "(prefers-contrast: no-preference)"
-  | "(prefers-reduced-transparency: reduce)"
-  | "(prefers-reduced-transparency: no-preference)"
-  | "(prefers-reduced-data: reduce)"
-  | "(prefers-reduced-data: no-preference)"
   | "(forced-colors: active)"
   | "(forced-colors: none)"
   | "(inverted-colors: inverted)"
-  | "(inverted-colors: none)"
-  | "(orientation: portrait)"
-  | "(orientation: landscape)";
-
-export type AnyObject = Record<PropertyKey, any>;
+  | "(inverted-colors: none)";
 
 export type NAMED_COLORS_TYPE = (typeof NAMED_COLORS_ARRAY)[number];
 type CSS_COLOR_FN_NAME =
