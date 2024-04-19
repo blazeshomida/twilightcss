@@ -29,7 +29,9 @@ type MediaTokens<TPrimitives, TKey extends PropertyKey> = {
   tokens: Tokens<TPrimitives, TKey>;
 };
 
-export type Theme<TPrimitives, TKey extends PropertyKey = PropertyKey> =
+export type _BaseTheme<TPrimitives, TKey extends PropertyKey = PropertyKey> =
   | SelectorTokens<TPrimitives, TKey>
   | MediaTokens<TPrimitives, TKey>
   | (SelectorTokens<TPrimitives, TKey> & MediaTokens<TPrimitives, TKey>);
+
+export type Theme<TPrimitives, TKey extends PropertyKey = PropertyKey> = _BaseTheme<TPrimitives, TKey>

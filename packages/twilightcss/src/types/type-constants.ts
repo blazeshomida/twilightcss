@@ -1,7 +1,7 @@
 import _colors from "tailwindcss/colors";
-import { Theme as _Theme } from "./config-types";
 import { DEFAULT_TOKENS, NAMED_COLORS_ARRAY } from "@/core/constants";
-import { AnyObject, Join } from "./type-utils";
+import type { _BaseTheme } from "./config-types";
+import type { AnyObject, Join } from "./type-utils";
 
 // Type Constants
 export type COLOR_MEDIA_QUERIES =
@@ -40,7 +40,6 @@ export namespace Tailwind {
     | "coolGray"
     | "blueGray";
 
-  export const colors = _colors;
   export type ColorName = keyof Omit<
     typeof _colors,
     keyof ReturnType<typeof DEFAULT_TOKENS> | DeprecatedColor
@@ -100,5 +99,5 @@ export namespace Shadcn {
     | "input"
     | "ring";
 
-  export type Theme<TPrimitives> = _Theme<TPrimitives, Tokens>;
+  export type Theme<TPrimitives> = _BaseTheme<TPrimitives, Tokens>;
 }
