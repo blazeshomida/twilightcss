@@ -3,14 +3,33 @@
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body class="bg-background text-foreground">
+    <div class="flex justify-between border-b border-border p-6">
+      <h1 class="font-bold text-xl">Astro</h1>
+      <nav>
+        <ul class="flex justify-between gap-2">
+          <li>Home</li>
+          <li>About</li>
+          <li>Contact</li>
+        </ul>
+      </nav>
+    </div>
+    <div class="p-4">
+      <button
+        class="bg-accent text-accent-foreground border-0 py-2 px-4 rounded focus-visible:bg-pink-700 focus-visible:outline-none hover:bg-pink-700 transition-colors"
+        >Click Me</button
+      >
+      <button
+        class="bg-error text-error-foreground border-0 py-2 px-4 rounded focus-visible:bg-error-hover focus-visible:outline-none hover:bg-error-hover transition-colors"
+        >Destroy Me</button
+      >
+    </div>
+  </body>
 </html>
