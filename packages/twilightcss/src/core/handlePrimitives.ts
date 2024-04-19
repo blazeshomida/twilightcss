@@ -29,8 +29,6 @@ export function handlePrimitives(
     twPrimitivesPlugin: {
       ":root": { ...DEFAULT_PRIMITIVES(prefix), ...twPrimitivesPlugin },
     },
-    twilightPrimitives: {
-      colors: { ...DEFAULT_TOKENS(prefix), ...twilightPrimitives },
-    },
+    twilightPrimitives: { ...DEFAULT_TOKENS(prefix), ...twilightPrimitives },
   };
 }
