@@ -1,28 +1,20 @@
-export const DEFAULT_PRIMITIVES = {
-  black: {
-    DEFAULT: "oklch(var(--clr-black) / <alpha-value>)",
-  },
-  current: {
-    DEFAULT: "var(--clr-current) ",
-  },
-  inherit: {
-    DEFAULT: "var(--clr-inherit) ",
-  },
-  transparent: {
-    DEFAULT: "var(--clr-transparent)",
-  },
-  white: {
-    DEFAULT: "oklch(var(--clr-white) / <alpha-value>)",
-  },
-};
+import { handlePrefix } from "@/utils/format-utils";
 
-export const DEFAULT_CSS_VARIABLES = {
-  "--clr-inherit": "inherit",
-  "--clr-current": "currentColor",
-  "--clr-transparent": "transparent",
-  "--clr-black": "0% 0 0",
-  "--clr-white": "100% 0 0",
-};
+export const DEFAULT_PRIMITIVES = (prefix: string = "clr") => ({
+  [`--${handlePrefix(prefix)}inherit`]: "inherit",
+  [`--${handlePrefix(prefix)}current`]: "currentColor",
+  [`--${handlePrefix(prefix)}transparent`]: "transparent",
+  [`--${handlePrefix(prefix)}black`]: "0% 0 0",
+  [`--${handlePrefix(prefix)}white`]: "100% 0 0",
+});
+
+export const DEFAULT_TOKENS = (prefix: string = "clr") => ({
+  inherit: `var(--${handlePrefix(prefix)}inherit) `,
+  current: `var(--${handlePrefix(prefix)}current) `,
+  transparent: `var(--${handlePrefix(prefix)}transparent)`,
+  black: `oklch(var(--${handlePrefix(prefix)}black) / <alpha-value>)`,
+  white: `oklch(var(--${handlePrefix(prefix)}white) / <alpha-value>)`,
+});
 
 export const NAMED_COLORS_ARRAY = [
   // CSS Level 1 colors

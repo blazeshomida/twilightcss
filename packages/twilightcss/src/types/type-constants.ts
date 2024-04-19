@@ -1,27 +1,20 @@
-import { NAMED_COLORS_ARRAY } from "@/lib/constants";
+import _colors from "tailwindcss/colors";
+import { DEFAULT_TOKENS, NAMED_COLORS_ARRAY } from "@/core/constants";
+import type { _BaseTheme } from "./config-types";
+import type { AnyObject, Join } from "./type-utils";
 
 // Type Constants
-export type MEDIA_QUERIES =
+export type COLOR_MEDIA_QUERIES =
   | "(prefers-color-scheme: dark)"
   | "(prefers-color-scheme: light)"
   | "(prefers-color-scheme: no-preference)"
-  | "(prefers-reduced-motion: reduce)"
-  | "(prefers-reduced-motion: no-preference)"
   | "(prefers-contrast: more)"
   | "(prefers-contrast: less)"
   | "(prefers-contrast: no-preference)"
-  | "(prefers-reduced-transparency: reduce)"
-  | "(prefers-reduced-transparency: no-preference)"
-  | "(prefers-reduced-data: reduce)"
-  | "(prefers-reduced-data: no-preference)"
   | "(forced-colors: active)"
   | "(forced-colors: none)"
   | "(inverted-colors: inverted)"
-  | "(inverted-colors: none)"
-  | "(orientation: portrait)"
-  | "(orientation: landscape)";
-
-export type AnyObject = Record<PropertyKey, any>;
+  | "(inverted-colors: none)";
 
 export type NAMED_COLORS_TYPE = (typeof NAMED_COLORS_ARRAY)[number];
 type CSS_COLOR_FN_NAME =
@@ -38,3 +31,73 @@ type CSS_COLOR_FN_NAME =
   | "light-dark"
   | "color-mix";
 export type VALID_CSS_COLOR_FN = `${CSS_COLOR_FN_NAME}(${string})`;
+
+export namespace Tailwind {
+  type DeprecatedColor =
+    | "lightBlue"
+    | "warmGray"
+    | "trueGray"
+    | "coolGray"
+    | "blueGray";
+
+  export type ColorName = keyof Omit<
+    typeof _colors,
+    keyof ReturnType<typeof DEFAULT_TOKENS> | DeprecatedColor
+  >;
+  export type Shade =
+    | "50"
+    | "100"
+    | "200"
+    | "300"
+    | "400"
+    | "500"
+    | "600"
+    | "700"
+    | "800"
+    | "900"
+    | "950";
+  export type ColorShade = Join<Tailwind.ColorName, Tailwind.Shade>;
+
+  // Refer to https://tailwindcss.com/docs/theme#configuration-reference for theme options
+  export type ColorConfig =
+    | "accentColor"
+    | "backgroundColor"
+    | "borderColor"
+    | "boxShadowColor"
+    | "caretColor"
+    | "colors"
+    | "divideColor"
+    | "gradientColorStops"
+    | "outlineColor"
+    | "ringColor"
+    | "ringOffsetColor"
+    | "textColor"
+    | "textDecorationColor";
+
+  export type Config = Partial<Record<ColorConfig, AnyObject>>;
+}
+
+export namespace Shadcn {
+  export type Tokens =
+    | "background"
+    | "foreground"
+    | "card"
+    | "card-foreground"
+    | "popover"
+    | "popover-foreground"
+    | "primary"
+    | "primary-foreground"
+    | "secondary"
+    | "secondary-foreground"
+    | "muted"
+    | "muted-foreground"
+    | "accent"
+    | "accent-foreground"
+    | "destructive"
+    | "destructive-foreground"
+    | "border"
+    | "input"
+    | "ring";
+
+  export type Theme<TPrimitives> = _BaseTheme<TPrimitives, Tokens>;
+}

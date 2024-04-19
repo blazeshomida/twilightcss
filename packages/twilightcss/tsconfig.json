@@ -17,5 +17,7 @@
     "strict": true,
     "target": "ES2022",
     "outDir": "dist"
-  }
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules"]
 }
