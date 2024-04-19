@@ -1,6 +1,6 @@
-import { Shadcn, Tailwind } from "@/types/type-constants";
+import colors from "tailwindcss/colors";
+import { Shadcn } from "@/types/type-constants";
 import { Theme, createTwilight } from "..";
-const { colors } = Tailwind;
 export const TEST_PRIMITIVES = {
   black: "#010101", // Custom black color
   error: {
