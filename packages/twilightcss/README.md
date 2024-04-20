@@ -121,7 +121,7 @@ const primitives = {
 
 ### Step 2: Define Themes
 
-In this step, you will create your themes using the `Theme` type provided by TwilightCSS, which ensures type safety when working with TypeScript. The `Theme` type accepts two generic parameters: the first for your color primitives providing autocomplete, and the second for defining keys used in your tokens, enabling precise configuration of your theme properties.
+In this step, you will create your themes using the `Theme` type provided by TwilightCSS, which ensures type safety when working with TypeScript. The `Theme` type accepts two generic parameters: the first for your color primitives providing autocomplete, and the second which is **optional** for defining keys used in your tokens, enabling precise configuration of your theme properties.
 
 When defining a theme, specify selectors or media queries (e.g., `(prefers-color-scheme: dark)`) to determine where and how the theme applies. You can define tokens for any Tailwind CSS configuration options such as `colors`, `backgroundColor`, `textColor`, `borderColor`, `accentColor`, etc. Utilizing the specific properties like `textColor` or `backgroundColor` allows you to restrict which utilities are generated, in contrast to the more global `colors` option that affects multiple utilities.
 
@@ -140,7 +140,7 @@ type Keys =
   | `${Colors}-${Variants}-${States}`;
 
 // Defining a dark theme for Tailwind CSS
-const tailwindDark: Theme<typeof primitives, Keys> = {
+const tailwindDark: Theme<typeof primitives, /* optional */ Keys> = {
   selectors: [":root", ".dark"],
   media: [["(prefers-color-scheme: dark)", ":root"]],
   tokens: {
