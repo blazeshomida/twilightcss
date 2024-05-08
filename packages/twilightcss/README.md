@@ -6,6 +6,8 @@ TwilightCSS provides a streamlined, powerful theming solution for TailwindCSS, d
 
 > **Documentation in Progress:** For more details and updates, check out the [docs directory](https://github.com/blazeshomida/twilightcss/tree/main/apps/docs/src/content/docs) in our repository.
 
+> **Why the minor bumps?** This project is still experimental, so things will probably change often until stable.
+
 ## Features and Benefits
 
 TwilightCSS elevates TailwindCSS projects by introducing a robust, TypeScript-powered theming system. This innovative tool simplifies the development workflow, significantly reducing redundancy and boosting the maintainability of themes.
@@ -240,17 +242,14 @@ Finalize by integrating TwilightCSS with your Tailwind configuration using `crea
 ```typescript
 import { createTwilight } from "@twilightcss/twilightcss";
 
-const { twilightPrimitives, twilightTokens, twilightPlugin } = createTwilight({
+const twilightPlugin = createTwilight({
   primitives: primitives,
   themes: [shadcnLight, shadcnDark],
 });
 
 export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
-  theme: {
-    colors: { ...twilightPrimitives },
-    extend: { ...twilightTokens },
-  },
+  theme: {},
   plugins: [twilightPlugin],
 };
 ```

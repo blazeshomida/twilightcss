@@ -122,9 +122,9 @@ const TEST_SHADCN_LIGHT: Shadcn.Theme<typeof TEST_PRIMITIVES> = {
       primary: "neutral-950",
       "primary-foreground": "neutral-50",
       secondary: "purple-500",
-      "secondary-foreground": "purple-950",
+      "secondary-foreground": "purple-50",
       accent: "pink-500",
-      "accent-foreground": "pink-950",
+      "accent-foreground": "pink-50",
       destructive: "error",
       "destructive-foreground": "neutral-50",
       border: "neutral-600",
@@ -151,12 +151,7 @@ const TEST_SHADCN_DARK: Theme<typeof TEST_PRIMITIVES, Shadcn.Tokens> = {
   },
 };
 
-export const {
-  twilightPlugin,
-  twilightPrimitives,
-  twilightTokens,
-  twilightCSS,
-} = createTwilight({
+export const twilightPlugin = createTwilight({
   primitives: TEST_PRIMITIVES,
   themes: [TEST_SHADCN_LIGHT, TEST_SHADCN_DARK],
 });
