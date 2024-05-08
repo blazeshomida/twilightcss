@@ -216,17 +216,15 @@ Finalize by integrating TwilightCSS with your Tailwind configuration using `crea
 ```typescript
 import { createTwilight } from "@twilightcss/twilightcss";
 
-const { twilightPrimitives, twilightTokens, twilightPlugin } = createTwilight({
+
+const twilightPlugin = createTwilight({
   primitives: primitives,
   themes: [shadcnLight, shadcnDark],
 });
 
 export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
-  theme: {
-    colors: { ...twilightPrimitives },
-    extend: { ...twilightTokens },
-  },
+  theme: {},
   plugins: [twilightPlugin],
 };
 ```
