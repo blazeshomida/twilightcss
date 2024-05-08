@@ -4,7 +4,6 @@ import { NestedObject } from "@/types/type-utils";
 import { deepMerge } from "@/utils/deepMerge";
 import { handlePrimitives } from "./handlePrimitives";
 import { handleThemes } from "./handleThemes";
-import { objectToCss } from "@/utils/objectToCss";
 import { NAMED_COLORS_TYPE, VALID_CSS_COLOR_FN } from "@/types/type-constants";
 
 export function createTwilight<
@@ -27,12 +26,12 @@ export function createTwilight<
   );
   const { twTokensPlugin, twilightTokens } = handleThemes(themes, prefix);
   const base = deepMerge(twPrimitivesPlugin, twTokensPlugin);
-  const twilightPlugin = plugin(({ addBase }) => addBase(base));
+  const twilightPlugin = plugin(({ addBase }) => addBase(base), {
+    theme: {
+      colors: twilightPrimitives,
+      extend: twilightTokens,
+    },
+  });
 
-  return {
-    twilightPrimitives,
-    twilightTokens,
-    twilightPlugin,
-    twilightCSS: objectToCss(base),
-  };
+  return twilightPlugin;
 }
