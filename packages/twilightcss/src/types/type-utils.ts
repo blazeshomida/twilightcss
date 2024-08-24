@@ -7,14 +7,8 @@ export type NestedObject<TValue, TKey extends PropertyKey = PropertyKey> = {
 type _Filler = 0;
 type TupLength<TTuple extends unknown[]> = TTuple["length"] & number;
 
-type NumToTup<
-  TLength extends number,
-  TFiller = _Filler,
-  _TAccumulator extends unknown[] = [],
-> =
-  TupLength<_TAccumulator> extends TLength
-    ? _TAccumulator
-    : NumToTup<TLength, TFiller, [..._TAccumulator, TFiller]>;
+type NumToTup<TLength extends number, TFiller = _Filler, _TAccumulator extends unknown[] = []> =
+  TupLength<_TAccumulator> extends TLength ? _TAccumulator : NumToTup<TLength, TFiller, [..._TAccumulator, TFiller]>;
 
 type Subtract<A extends number, B extends number> =
   NumToTup<A> extends [...infer A1, _Filler]
@@ -29,12 +23,7 @@ export type Join<
   Delimiter extends string = "-",
 > = `${TFirst}${Delimiter}${TSecond}`;
 
-type HandleFinal<
-  TKey,
-  TFinal,
-  TDelimiter extends string,
-  TPath,
-> = TKey extends TFinal
+type HandleFinal<TKey, TFinal, TDelimiter extends string, TPath> = TKey extends TFinal
   ? TPath extends `${infer Pre}${TDelimiter}`
     ? Pre
     : TPath
@@ -51,15 +40,9 @@ export type Pathify<
 > = Depth extends 0
   ? never
   : {
-      [K in keyof TObj]: `${Prefix}${K extends Final ? "" : K & string}` extends infer Path
+      [K in keyof TObj]: `${Prefix}${K extends Final ? "" : K & (string | number)}` extends infer Path
         ? TObj[K] extends AnyObject
-          ? Pathify<
-              TObj[K],
-              Final,
-              Delimiter,
-              `${Path & string}${Delimiter}`,
-              Subtract<Depth, 1>
-            >
+          ? Pathify<TObj[K], Final, Delimiter, `${Path & (string | number)}${Delimiter}`, Subtract<Depth, 1>>
           : HandleFinal<K, Final, Delimiter, Path>
         : never;
     }[keyof TObj];
