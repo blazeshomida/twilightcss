@@ -104,7 +104,7 @@ describe("handleThemes", () => {
     it("should have tokens that match shadcn", () => {
       const { twilightTokens } = handleThemes(
         [TEST_SHADCN_LIGHT, TEST_SHADCN_DARK],
-        "clr"
+        "clr",
       );
       expect(twilightTokens).toStrictEqual({
         colors: {

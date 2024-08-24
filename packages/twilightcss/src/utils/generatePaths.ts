@@ -1,7 +1,10 @@
-import { isRecord, objectEntries, objectKeys, objectValues } from "./object-fills";
+import {
+  isRecord,
+  objectEntries,
+  objectKeys,
+  objectValues,
+} from "./object-fills";
 import { AnyObject } from "@/types/type-utils";
-
-
 
 type CompositeOptions<THandlerName extends string> = {
   delimiter: string;
@@ -34,7 +37,7 @@ export function generatePaths<THandlerName extends string = "paths">(
     isRecord(value)
       ? generatePaths(value, options, newPath, ...maps)
       : objectValues(handlers).forEach((handler, index) =>
-          handler({ key: newPath, value, map: maps[index]! })
+          handler({ key: newPath, value, map: maps[index]! }),
         );
   }
 
@@ -43,6 +46,6 @@ export function generatePaths<THandlerName extends string = "paths">(
       ...acc,
       [objectKeys(handlers)[index]!]: Object.fromEntries(map),
     }),
-    {}
+    {},
   ) as Record<THandlerName, Record<string, string>>;
 }

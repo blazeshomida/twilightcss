@@ -216,7 +216,6 @@ Finalize by integrating TwilightCSS with your Tailwind configuration using `crea
 ```typescript
 import { createTwilight } from "@twilightcss/twilightcss";
 
-
 const twilightPlugin = createTwilight({
   primitives: primitives,
   themes: [shadcnLight, shadcnDark],

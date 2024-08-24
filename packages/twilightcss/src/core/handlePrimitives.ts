@@ -6,7 +6,7 @@ import { oklch } from "culori";
 
 export function handlePrimitives(
   primitives: NestedObject<string>,
-  prefix: string
+  prefix: string,
 ) {
   const { twPrimitivesPlugin, twilightPrimitives } = generatePaths(primitives, {
     handlers: {
@@ -14,13 +14,13 @@ export function handlePrimitives(
         const { l = 0, c = 0, h = 0 } = oklch(value) ?? {};
         map.set(
           `--${handlePrefix(prefix) + key}`,
-          `${Math.round(roundTo(l) * 100)}% ${roundTo(c)} ${roundTo(h)}`
+          `${Math.round(roundTo(l) * 100)}% ${roundTo(c)} ${roundTo(h)}`,
         );
       },
       twilightPrimitives: ({ key, map }) => {
         map.set(
           key,
-          `oklch(var(--${handlePrefix(prefix) + key}) / <alpha-value>)`
+          `oklch(var(--${handlePrefix(prefix) + key}) / <alpha-value>)`,
         );
       },
     },
