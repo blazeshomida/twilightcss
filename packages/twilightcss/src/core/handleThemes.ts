@@ -7,13 +7,13 @@ import { generatePaths } from "@/utils/generatePaths";
 import { handlePrefix } from "@/utils/format-utils";
 
 const validMediaArray = (
-  media: MediaProp | MediaProp[]
+  media: MediaProp | MediaProp[],
 ): media is MediaProp[] => media.every(Array.isArray);
 
 function handleMedia<TPrimitives, TKey extends PropertyKey>(
   media: MediaProp | MediaProp[],
   currentTokens: Tokens<TPrimitives, TKey>,
-  twPluginThemes: AnyObject
+  twPluginThemes: AnyObject,
 ) {
   const mediaArray = validMediaArray(media) ? media : [media];
   return Object.assign(
@@ -27,30 +27,30 @@ function handleMedia<TPrimitives, TKey extends PropertyKey>(
           },
           ...acc,
         }),
-        {}
-      )
-    )
+        {},
+      ),
+    ),
   );
 }
 
 function handleSelectors<TPrimitives, TKey extends PropertyKey>(
   selectors: string | string[],
   currentTokens: Tokens<TPrimitives, TKey>,
-  twPluginThemes: AnyObject
+  twPluginThemes: AnyObject,
 ) {
   const selectorArray = Array.isArray(selectors) ? selectors : [selectors];
   return Object.assign(
     twPluginThemes,
     deepMerge(twPluginThemes, {
       [selectorArray.join(", ")]: currentTokens,
-    })
+    }),
   );
 }
 
 function handleTokens<TPrimitives, TKey extends PropertyKey>(
   tokens: Tokens<TPrimitives, TKey>,
   twColorTokensConfig: Tailwind.Config,
-  prefix: string
+  prefix: string,
 ) {
   const currentTokens: Tokens<TPrimitives, TKey> = {};
   objectKeys(tokens).forEach((domain) => {
@@ -62,7 +62,7 @@ function handleTokens<TPrimitives, TKey extends PropertyKey>(
             : domain;
           map.set(
             `--${handlePrefix(prefix)}${domainPre === "colors" ? "" : domainPre + "-"}${key}`,
-            `var(--${handlePrefix(prefix) + value})`
+            `var(--${handlePrefix(prefix) + value})`,
           );
         },
 
@@ -78,7 +78,7 @@ function handleTokens<TPrimitives, TKey extends PropertyKey>(
             : domain;
           map.set(
             key,
-            `oklch(var(--${handlePrefix(prefix)}${domainPre === "colors" ? "" : domainPre + "-"}${key}) / <alpha-value>)`
+            `oklch(var(--${handlePrefix(prefix)}${domainPre === "colors" ? "" : domainPre + "-"}${key}) / <alpha-value>)`,
           );
         },
       },
@@ -93,7 +93,7 @@ function handleTokens<TPrimitives, TKey extends PropertyKey>(
 
 export function handleThemes<TPrimitives, TKey extends PropertyKey = string>(
   themes: Theme<TPrimitives, TKey>[],
-  prefix: string
+  prefix: string,
 ) {
   const twilightTokens: Partial<Record<Tailwind.ColorConfig, AnyObject>> = {};
   const twTokensPlugin: AnyObject = {};

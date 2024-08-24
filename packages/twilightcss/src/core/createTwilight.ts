@@ -22,7 +22,7 @@ export function createTwilight<
 }) {
   const { twPrimitivesPlugin, twilightPrimitives } = handlePrimitives(
     primitives,
-    prefix
+    prefix,
   );
   const { twTokensPlugin, twilightTokens } = handleThemes(themes, prefix);
   const base = deepMerge(twPrimitivesPlugin, twTokensPlugin);

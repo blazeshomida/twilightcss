@@ -136,7 +136,10 @@ type Variants = "primary" | "secondary";
 type States = "hover" | "focus" | "active";
 
 // Composite key types for flexible theme token definitions
-type Keys = Colors | `${Colors}-${Variants}` | `${Colors}-${Variants}-${States}`;
+type Keys =
+  | Colors
+  | `${Colors}-${Variants}`
+  | `${Colors}-${Variants}-${States}`;
 
 // Defining a dark theme for Tailwind CSS
 const tailwindDark: Theme<typeof primitives, /* optional */ Keys> = {
